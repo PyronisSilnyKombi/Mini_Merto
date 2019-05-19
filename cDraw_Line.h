@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "cLine.h"
 #include <GL/freeglut.h>
 
