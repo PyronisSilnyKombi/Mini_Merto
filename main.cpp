@@ -3,7 +3,6 @@
 #define NDEBUG
 #include <GL/freeglut.h>
 #include "cScene.h"
-
 cMap scena;
 
 void resize_binding(int width, int height) {
@@ -15,7 +14,7 @@ void key_binding(unsigned char key, int x, int y) {
 }
 
 void idle_binding() {
-	/*scena.idle();*/
+	scena.idle();
 }
 
 void timer_binding(int msec) {
@@ -38,7 +37,7 @@ void mouse_move_binding(int x, int y) {
 int main(int argc, char *argv[])
 {
 	std::cout << "Hello openGL world!" << std::endl;
-	scena.init(argc, argv, "Okno sceny");
-
+	/*scena.init(argc, argv, "Okno sceny");*/
+	system("pause");
 	return 0;
 }

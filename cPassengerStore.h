@@ -1,32 +1,27 @@
 #pragma once
 #include <GL/freeglut.h>
-#include "cFizyka.h"
 #include<vector>
+#include <list>
 #include<string>
 
 // dziedziczy z cFizyki i cFigury
-class cPassengerStore : public cFizyka {
+class cPassengerStore{
 protected:
-	unsigned int max_capacity_;
-	std::vector<char> passengers_;  // c - circle, t - triangle, s - square, r - rhombus, p - pentagon, s - star, m - cross;
+	double x_, y_;
+	int max_capacity_;
+	std::vector<int> passengers_;  // 1 - circle, 2 - triangle, 3 - square, 4 - rhombus, 5 - pentagon, 6 - star, 7 - cross;
 
 
 public:
-	cPassengerStore(double max_capacity = 6);
-	std::vector<char> passengers(); // zwraca wektor pasa¿erów ¿eby mo¿na by³o ich narysowac w lokomotywie i na przystankach
+	cPassengerStore(double x = 0, double y = 0, double max_capacity = 6);
 
+	//getery
+	std::vector<int> passengers() { return passengers_; } // zwraca wektor pasa¿erów ¿eby mo¿na by³o ich narysowac w lokomotywie i na przystankach
+	double x() { return x_; };
+	double y() { return y_; };
+	int max_capacity() { return max_capacity_; };
 
-	//czêœæ Kacpra
-	virtual void draw() = 0;
-	void move(double dx, double dy);
-	void rotate_clockwise();
-	virtual  void update() = 0;
-	void speed_up_x(const float& val);
-	void speed_up_y(const float& val);
-	void slow_down_x(const float& val);
-	void slow_down_y(const float& val);
-	virtual bool isClicked(double openglX, double openglY) = 0;
-	virtual bool isUnclicked(double openglX, double openglY) = 0;
-	void follow (double dx, double dy);
-	void set_color(double r, double g, double b);
+	//setery
+	void set_passengers(const std::vector<int> &passengers) { passengers_ = passengers; };
+	
 };
