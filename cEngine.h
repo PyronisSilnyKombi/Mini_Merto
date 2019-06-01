@@ -6,28 +6,19 @@
 #include <vector>
 #include <list>
 
-void resize_binding(int width, int height);
-void idle_binding();
-void display_binding();
-void key_binding(unsigned char key, int x, int y);
-//void mouse_binding(int button, int state, int x, int y);
-void mouse_move_binding(int x, int y);
-void timer_binding(int i);
-
 class cEngine {
 	std::list<cStation*> stations_;
 	std::vector<cLine*> lines_;
 	std::vector<cLocomotive*> locomotives_;
-	//std::vector<cPassengerStore*> figures;
 
 	int ilosc_przewiezionych_pasazerow_;
 	int ilosc_wolnych_lokomotyw_;
 	int ilosc_wolnych_linii_;
 
-	int poziom_mapy_; // poziom mapy okresla na jakie figury moze pojawic sie szansa wylosowania, jezeli poziom mapy to 0 - na mapie aktualnie sa tylko ko³a, to mo¿e wylosowaæ ko³o albo trójk¹t,
-	// je¿eli zostanie wylosowane ko³o to funkcja zwraca 0 i poziom zostaje 0, je¿eli trójk¹t to zwraca 1 i poziom na mapie zmienia siê na 1,
-	// a w nastêpnej turze losowania mo¿e wypaœæ kszta³t poziomu wy¿szego - kwadrat. ten mechanizm s³uzy nie spownowaniu siê pasa¿erów krórzy nie maj¹ jeszcze swoich stacji
-	// losuje kszta³t stacji na podstawie czsu gry (na pocz¹tku pojawiaj¹ sie tylko kó³ka, trójk¹ty i kwadraty,
+	int poziom_mapy_; // poziom mapy okresla na jakie figury moze pojawic sie szansa wylosowania, jezeli poziom mapy to 0 - na mapie aktualnie sa tylko koÅ‚a, to moÅ¼e wylosowaÄ‡ koÅ‚o albo trÃ³jkÄ…t,
+	// jeÅ¼eli zostanie wylosowane koÅ‚o to funkcja zwraca 0 i poziom zostaje 0, jeÅ¼eli trÃ³jkÄ…t to zwraca 1 i poziom na mapie zmienia siÄ™ na 1,
+	// a w nastÄ™pnej turze losowania moÅ¼e wypaÅ›Ä‡ ksztaÅ‚t poziomu wyÅ¼szego - kwadrat. ten mechanizm sÅ‚uzy nie spownowaniu siÄ™ pasaÅ¼erÃ³w krÃ³rzy nie majÄ… jeszcze swoich stacji
+	// losuje ksztaÅ‚t stacji na podstawie czsu gry (na poczÄ…tku pojawiajÄ… sie tylko kÃ³Å‚ka, trÃ³jkÄ…ty i kwadraty,
 	// po pewnym czasie jest szansa na wylosowanie innych bardziej skomplikowanych figur);
 
 	
