@@ -13,22 +13,22 @@ protected:
 	bool loop_;
 
 public:
-	cLine(char color = 'r', bool loop = false);
+	cLine(cStation &s, char color = 'r', bool loop = false);
 
-	void erase_station(const cStation& a);
-	void add_station(const cStation& a);
+	void erase_station(cStation& s);
+	void add_station(cStation& s);
 
 	bool Loop(); // spr czy linia jest petl¹;
 
 	//getery
 	bool loop() { return loop_; }
 	char color() { return color_; }
+	std::list<cStation*> line_stations() { return line_stations_; }
 
 	//setery
 	void set_color(const char& color) { color_ = color; }
 	void set_loop(const bool& x) { loop_ = x; }
 
-	void draw();
 
 };
 

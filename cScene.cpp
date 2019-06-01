@@ -3,55 +3,7 @@
 #include <chrono>
 
 cMap::cMap(){
-	poziom_mapy_ = 1;
-	int tmp_lvl;
-	cStation s1, s2, s3, s4, s5, s6, s7, s8;
-	srand(time(NULL));
-	stations_.push_back(&s1.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s2.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s3.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
 
-	stations_.push_back(&s4.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s5.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s6.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s7.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s8.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-
-	stations_.push_back(&s1.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s2.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-	stations_.push_back(&s3.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	poziom_mapy_ = tmp_lvl;
-
-
-
-	//cStation s;
-	//for (int i = 0; i < 10; i++) {
-	//	stations_.push_back(&s.spawn(stations_, 2, 20, 20, poziom_mapy_, tmp_lvl));
-	//	/*std::cout << s.x() << "  " << s.y() << "  " << s.shape() << "   " << s.state() << std::endl;*/
-	//	poziom_mapy_ = tmp_lvl;
-	//}
-	
-	std::cout << "Poziom: " << poziom_mapy_ << std::endl << std::endl;
-	for (auto el : stations_) {
-		for (int i = 0; i < 10; i++)
-		el->spawn_passenger(poziom_mapy_);
-	}
-
-	std::cout << "x:  y:  shape:  state: " << std::endl << "passengers: " << std::endl << std::endl;
-	for (auto el : stations_) {
-		std::cout << el->x() << "  " << el->y() << "  " << el->shape() << "   " << el->state() << std::endl;
-		el->show_passengers(); std::cout << std::endl << std::endl;
-	}
 }
 
 void cMap::resize(int width, int height) {

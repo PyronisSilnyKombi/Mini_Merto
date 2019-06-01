@@ -32,11 +32,4 @@ public:
 
 
 	void upusc_na_linie(const cLine& line); // dodaje kolejke z wektora kolejek dostepnych w scenie na okreslonym odcinku lini jadaca w kierunku blizszej stacjii nadaje jej predkosc
-
-
-	// czesc Kacpra
-	void draw();
-	void update();
-	bool isClicked(double openglX, double openglY);
-	bool isUnclicked(double openglX, double openglY);
 };
