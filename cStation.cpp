@@ -89,3 +89,16 @@ int cStation::overcrowd() {
 void cStation::erase_passengers(cLocomotive& loco) {
 
 }
+
+void cStation::add_passenger(const int& i) {
+	passengers_.push_back(i);
+}
+
+bool cStation::change(std::list<cStation*> l, const int& i) {
+	for (auto el : l) {
+		if (el->shape() == i) {
+			return false;
+		}
+	}
+	return true;
+}

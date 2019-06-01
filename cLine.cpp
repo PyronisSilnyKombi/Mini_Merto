@@ -1,6 +1,6 @@
 #include "cLine.h"
 
-cLine::cLine(cStation &s, char color, bool loop) : color_(color), loop_(loop) {
+cLine::cLine(cStation &s, int color, bool loop) : color_(color), loop_(loop) {
 	line_stations_.push_back(&s);
 }
 
@@ -12,12 +12,8 @@ void cLine::erase_station(cStation& s) {
 	}
 }
 
-void cLine::add_station(cStation& s) {
-	line_stations_.push_back(&s);
-}
-
 bool cLine::Loop() {
-	if (line_stations_.front() == line_stations_.back()) return true;
+	if ((line_stations_.front() == line_stations_.back()) && line_stations_.size() >= 3) return true;
 	else return false;
 }
 

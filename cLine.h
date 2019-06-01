@@ -8,17 +8,17 @@
 // friend z klas¹ sStation;
 class cLine{
 protected:
-	char color_; //r - red, b - blue, y - yellow, g - green, o - orange, p - purple, l - light blue;
+	int color_; //0 - red, 1 - blue, 2 - yellow, 3 - green, 4 - orange, 5 - purple, 6 - light blue;
 	std::list<cStation*> line_stations_; // stores stations 1, 2, 3 ... , 1
 	bool loop_;
+	int length;
 
 public:
-	cLine(cStation &s, char color = 'r', bool loop = false);
+	cLine(cStation &s, int color = 0, bool loop = false);
+	
+	bool Loop(); // spr czy linia jest petl¹;
 
 	void erase_station(cStation& s);
-	void add_station(cStation& s);
-
-	bool Loop(); // spr czy linia jest petl¹;
 
 	//getery
 	bool loop() { return loop_; }

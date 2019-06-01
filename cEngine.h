@@ -6,19 +6,10 @@
 #include <vector>
 #include <list>
 
-void resize_binding(int width, int height);
-void idle_binding();
-void display_binding();
-void key_binding(unsigned char key, int x, int y);
-//void mouse_binding(int button, int state, int x, int y);
-void mouse_move_binding(int x, int y);
-void timer_binding(int i);
-
 class cEngine {
 	std::list<cStation*> stations_;
 	std::vector<cLine*> lines_;
 	std::vector<cLocomotive*> locomotives_;
-	//std::vector<cPassengerStore*> figures;
 
 	int ilosc_przewiezionych_pasazerow_;
 	int ilosc_wolnych_lokomotyw_;
@@ -30,16 +21,18 @@ class cEngine {
 	// losuje kszta³t stacji na podstawie czsu gry (na pocz¹tku pojawiaj¹ sie tylko kó³ka, trójk¹ty i kwadraty,
 	// po pewnym czasie jest szansa na wylosowanie innych bardziej skomplikowanych figur);
 
+	void ustaw_kolory();
 	
 	
 public:
-	cEngine();
+	cEngine(int ilosc_wolnych_lokomotyw = 3, int ilosc_wolnych_linii = 3);
 	~cEngine();
 	
 	void wybierz_bonus(); // wyswietlane po uplywie tyg do wyboru dodatkowa linia lub lokomotywa
-
 	void add_station(const float &r, const float &x, const float &y);
-	
+
+	void add_line(cStation &s);
+	void erase_line(int& ktory);// ktory z kolei 0,1,2,3 odpowiada kolorom 0 - red, 1 - blue, 2 - yellow, 3 - green, 4 - orange, 5 - purple, 6 - light blue;
 
 	//getery
 	int poziom_mapy() { return poziom_mapy_; }
