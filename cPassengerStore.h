@@ -23,5 +23,7 @@ public:
 
 	//setery
 	void set_passengers(const std::vector<int> &passengers) { passengers_ = passengers; };
+	void set_x(const double& x) { x_ = x; }
+	void set_y(const double& y) { y_ = y; }
 	
 };

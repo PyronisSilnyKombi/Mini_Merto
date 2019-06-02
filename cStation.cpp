@@ -1,11 +1,15 @@
 #include "cStation.h"
 #include <iostream>
 
+cStation::cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int shape, double x, double y, int capacity, int state) : cPassengerStore(x, y, capacity), shape_(shape), state_(state)  {
+	this->spawn(stations, r, width, height, poziom_mapy, tmp_lvl);
+}
+
 cStation::cStation(int shape, double x, double y, int capacity, int state) : cPassengerStore(x, y, capacity), shape_(shape), state_(state) {
 
 }
 
-cStation cStation::spawn(std::list<cStation*> &stations, const float &r, const float &x, const float &y, const int& poziom_mapy, int& tmp_lvl) {
+void cStation::spawn(std::list<cStation*> &stations, const float &r, const float &x, const float &y, const int& poziom_mapy, int& tmp_lvl) {
 	
 	int figure; // 1 - circle, 2 - triangle, 3 - square, 4 - rhombus, 5 - pentagon, 6 - star, 7 - cross;
 	
@@ -43,15 +47,14 @@ cStation cStation::spawn(std::list<cStation*> &stations, const float &r, const f
 		if (acc > 50) break;
 	} while (!good);
 
-	cStation s(figure,tmp_x,tmp_y);
+	this->shape_ = figure;
+	this->x_ = tmp_x;
+	this->y_ = tmp_y;
 	if (!good) tmp_lvl = -1;
 	else {
 		if (figure == poziom_mapy + 1) tmp_lvl = figure;
 		else tmp_lvl = poziom_mapy;
 	}
-	/*std::cout << s.x() << "  " << s.y() << "  " << s.shape() << "   " << s.state() << std::endl;*/
-
-	return s;
 }
 
 void cStation::spawn_passenger(const int& poziom) {
@@ -70,8 +73,10 @@ void cStation::spawn_passenger(const int& poziom) {
 		acc++;
 		if (acc > 50) return;
 	} while (figure > poziom);
-	if (figure != shape_)
-	passengers_.push_back(figure);
+	if (figure != shape_) {
+		passengers_.push_back(figure);
+		this->overcrowd();
+	}
 }
 
 int cStation::overcrowd() {
@@ -83,4 +88,17 @@ int cStation::overcrowd() {
 
 void cStation::erase_passengers(cLocomotive& loco) {
 
+}
+
+void cStation::add_passenger(const int& i) {
+	passengers_.push_back(i);
+}
+
+bool cStation::change(std::list<cStation*> l, const int& i) {
+	for (auto el : l) {
+		if (el->shape() == i) {
+			return false;
+		}
+	}
+	return true;
 }

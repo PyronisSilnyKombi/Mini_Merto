@@ -14,14 +14,10 @@ class cLocomotive;
 class cStation : public cPassengerStore {
 	int shape_; // 1 - circle, 2 - triangle, 3 - square, 4 - rhombus, 5 - pentagon, 6 - star, 7 - cross;
 	int state_; // 0 - save, 1 - dangerous(the number of passengers is close to the maximum value of the capacity), 2 - overcrovded;
-	std::vector<char> colors_; //r - red, b - blue, y - yellow, g - green, o - orange, p - purple, l - light blue; kolory lini do krórych nale¿y ta stacja
-	std::vector<cLocomotive*> lokomotywy; // wszka¿niki do wszystkich lokomotyw nale¿¹cych do lini przechodz¹cych przez t¹ stacjê
+	std::vector<int> colors_; //0 - red, 1 - blue, 2 - yellow, 3 - green, 4 - orange, 5 - purple, 6 - light blue; kolory lini do krórych nale¿y ta stacja
+	std::vector<cLocomotive*> lokomotywy_; // wszka¿niki do wszystkich lokomotyw nale¿¹cych do lini przechodz¹cych przez t¹ stacjê
 	
-public:
-	cStation(int shape = 1, double x = 0, double y = 0, int capacity = 20, int state = 0);
-	
-
-	cStation spawn(std::list<cStation*> &stations, const float &r, const float &x, const float &y, const int &poziom_mapy, int& tmp_lvl);
+	void spawn(std::list<cStation*> &stations, const float &r, const float &x, const float &y, const int &poziom_mapy, int& tmp_lvl);
 	// spawns a station on the map (w okreslonej {nie mniejszej od wartosci r} odleg³oœci od innych stacji z wektora stations, w obrembie mapy o szerokosci x i wysokoœci y)
 	// ustawia wspó³rzêdne x i y stacji ;
 	// poziom mapy okresla na jakie figury moze pojawic sie szansa wylosowania, jezeli poziom mapy to 0 - na mapie aktualnie sa tylko ko³a, to mo¿e wylosowaæ ko³o albo trójk¹t,
@@ -31,7 +27,12 @@ public:
 	// po pewnym czasie jest szansa na wylosowanie innych bardziej skomplikowanych figur);
 	// zwraca -1 gdy nie ma miejsca na mapie
 
+	int overcrowd(); //bada stan i zwraca stan_
 
+public:
+	//kostruktory
+	cStation(int shape = 1, double x = 0, double y = 0, int capacity = 20, int state = 0);
+	cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int shape = 0, double x = 0, double y = 0, int capacity = 20, int state = 0);
 
 	void spawn_passenger(const int& poziom);
 	// spawns a psssneger, losuje jego kszta³t i dodaje go wektora pasa¿erów stacji, (poziom okreœla jakie figury moga sie pojawic,
@@ -40,14 +41,16 @@ public:
 
 	void erase_passengers(cLocomotive& loco); // usuwa za³adowanych do pociagu pasa¿erów ze stacji 
 
-
-	int overcrowd(); //bada stan i zwraca stan_
-
+	bool change(std::list<cStation*> l, const int& i);
 
 	//getery
 	int shape() { return shape_; }
 	int state() { return state_; }
+	std::vector<cLocomotive*> lokomotywy() { return lokomotywy_; }
+	std::vector<int> colors() { return colors_; }
 
+	//setery
+	void add_passenger(const int& i);
 
 	void show_passengers() {
 		for (auto el : passengers_){
