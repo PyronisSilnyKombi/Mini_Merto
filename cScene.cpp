@@ -2,8 +2,18 @@
 #include <iostream>
 #include <chrono>
 
-cMap::cMap(){
+cMap::cMap()
+{
+	//cEngine silnik;
+	//silnik_ = silnik;
 
+	std::list<cStation*> stacje_tmp = silnik_.stations();
+	for (auto&el : stacje_tmp)
+	{
+		double x = el->x();
+		double y = el->y();
+		stations_d.push_back(new cDraw_Station(x, y));
+	}
 }
 
 void cMap::resize(int width, int height) {
@@ -22,8 +32,8 @@ void cMap::resize(int width, int height) {
 	glLoadIdentity();
 }
 
-void cMap::timer() {
-
+//void cMap::timer() {
+//
 	////int current_time = getTickCount();
 	////auto current_time = std::chrono::high_resolution_clock::now();
 
@@ -57,12 +67,25 @@ void cMap::timer() {
 
 	//glutPostRedisplay();
 	//glutTimerFunc(40, timer_binding, 0);
-}
+//}
 
 void cMap::idle() {
+	//std::list<cStation*> stacje_tmp = silnik_.stations();
+	//if (stacje_tmp.size() != stations_d.size())
+	//{
+	//	stations_d.erase(stations_d.begin(), stations_d.end());
+	//	for (auto&el : stacje_tmp)
+	//	{
+	//		double x = el->x();
+	//		double y = el->y();
+	//		stations_d.push_back(new cDraw_Station(x, y));
+	//	}
+	//	for (auto&el : stations_d)
+	//	{
+	//		el->draw_station();
+	//	}
+	//}
 
-	/*for (auto& el : figures)
-		el->update();*/
 	glutPostRedisplay();
 }
 
@@ -71,8 +94,22 @@ void cMap::display() {
 
 	glPushMatrix();
 	{
-		/*for (auto& el : figures)
-			el->draw();*/
+		std::list<cStation*> stacje_tmp = silnik_.stations();
+		if (stacje_tmp.size() != stations_d.size())
+		{
+			stations_d.erase(stations_d.begin(), stations_d.end());
+			for (auto&el : stacje_tmp)
+			{
+				double x = el->x();
+				double y = el->y();
+				stations_d.push_back(new cDraw_Station(x, y));
+			}
+		}
+		for (auto&el : stations_d)
+		{
+			el->draw_station();
+		}
+
 	}
 	glPopMatrix();
 	glutSwapBuffers();
@@ -83,8 +120,8 @@ void cMap::set_callbacks() {
 	glutReshapeFunc(resize_binding);
 	//glutMotionFunc(mouse_move_binding);
 	glutKeyboardFunc(key_binding);
-	glutTimerFunc(40, timer_binding, 0);
-	/*glutIdleFunc(idle_binding);*/
+	//glutTimerFunc(40, timer_binding, 0);
+	glutIdleFunc(idle_binding);
 	//glutMouseFunc(mouse_binding);
 	glutPassiveMotionFunc(mouse_move_binding);
 }

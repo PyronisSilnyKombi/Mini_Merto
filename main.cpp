@@ -5,7 +5,7 @@
 #include "cEngine.h"
 #include "cScene.h"
 cMap scene;
-cEngine silnik;
+//cEngine silnik;
 
 void resize_binding(int width, int height) {
 	scene.resize(width, height);
@@ -19,9 +19,9 @@ void idle_binding() {
 	scene.idle();
 }
 
-void timer_binding(int msec) {
-	scene.timer();
-}
+//void timer_binding(int msec) {
+//	scene.timer();
+//}
 
 void display_binding() {
 	scene.display();
@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 	std::cout << "Hello openGL world!" << std::endl;
 
 	std::cout << "x:  y:  shape:  state: " << std::endl << "passengers: " << std::endl << std::endl;
-	for (auto el : silnik.stations()) {
+	for (auto el : scene.silnik_.stations()) {
 		std::cout << el->x() << "  " << el->y() << "  " << el->shape() << "   " << el->state() << std::endl;
 		for (int i = 0; i < 10; i++)
-			el->spawn_passenger(silnik.poziom_mapy());
+			el->spawn_passenger(scene.silnik_.poziom_mapy());
 		el->show_passengers();
 		std::cout << std::endl << std::endl;
 	}
-	std::cout << "Poziom mapy: " << silnik.poziom_mapy() << std::endl;
+	std::cout << "Poziom mapy: " << scene.silnik_.poziom_mapy() << std::endl;
 	
 	scene.init(argc, argv, "Mini Metro");
 	system("pause");

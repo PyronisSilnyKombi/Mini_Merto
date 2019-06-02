@@ -1,8 +1,9 @@
 #pragma once
+#include "cScene.h"
 #include <GL/freeglut.h>
 
-class cDraw_line {
-	double x_, y_;	//wspolrzedne potrzebne do rysowania obiektow
+class cDraw_Line {
+
 public:
 
 	void draw_line();
@@ -10,9 +11,5 @@ public:
 	bool is_clicked(double openglX, double openglY);
 	bool is_unclicked(double openglX, double openglY);
 	void change_position();
-	void set_x_y_(double x, double y)
-	{
-		x_ = x;
-		y_ = y;
-	}
+	friend class cLine;
 };
