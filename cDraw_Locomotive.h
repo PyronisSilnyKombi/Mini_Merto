@@ -1,9 +1,8 @@
 #pragma once
-#include "cLocomotive.h"
 #include <GL/freeglut.h>
 
 class cDraw_locomotive {
-
+	double x_, y_;	//wspolrzedne potrzebne do rysowania obiektow
 public:
 
 	void draw_locomotive();
@@ -14,5 +13,9 @@ public:
 	void set_color(double r, double g, double b);
 	bool is_clicked(double openglX, double openglY);
 	bool is_unclicked(double openglX, double openglY);
-	friend class cLocomotive;
+	void set_x_y_(double x, double y)
+	{
+		x_ = x;
+		y_ = y;
+	}
 };
