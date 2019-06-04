@@ -7,13 +7,14 @@ cMap::cMap()
 	//cEngine silnik;
 	//silnik_ = silnik;
 
-	std::list<cStation*> stacje_tmp = silnik_.stations();
-	for (auto&el : stacje_tmp)
-	{
-		double x = el->x();
-		double y = el->y();
-		stations_d.push_back(new cDraw_Station(x, y));
-	}
+	//std::list<cStation*> stacje_tmp = silnik_.stations();
+	//for (auto&el : stacje_tmp)
+	//{
+	//	double x = el->x();
+	//	double y = el->y();
+	//	std::vector <int> p = el->passengers();
+	//	stations_d.push_back(new cDraw_Station(x, y, p));
+	//}
 }
 
 void cMap::resize(int width, int height) {
@@ -70,21 +71,19 @@ void cMap::resize(int width, int height) {
 //}
 
 void cMap::idle() {
-	//std::list<cStation*> stacje_tmp = silnik_.stations();
-	//if (stacje_tmp.size() != stations_d.size())
-	//{
-	//	stations_d.erase(stations_d.begin(), stations_d.end());
-	//	for (auto&el : stacje_tmp)
-	//	{
-	//		double x = el->x();
-	//		double y = el->y();
-	//		stations_d.push_back(new cDraw_Station(x, y));
-	//	}
-	//	for (auto&el : stations_d)
-	//	{
-	//		el->draw_station();
-	//	}
-	//}
+
+	std::list<cStation*> stacje_tmp = silnik_.stations();
+	if (stacje_tmp.size() != stations_d.size())
+	{
+		stations_d.erase(stations_d.begin(), stations_d.end());
+		for (auto&el : stacje_tmp)
+		{
+			double x = el->x();
+			double y = el->y();
+			std::vector <int> p = el->passengers();
+			stations_d.push_back(new cDraw_Station(x, y, p));
+		}
+	}
 
 	glutPostRedisplay();
 }
@@ -94,22 +93,10 @@ void cMap::display() {
 
 	glPushMatrix();
 	{
-		std::list<cStation*> stacje_tmp = silnik_.stations();
-		if (stacje_tmp.size() != stations_d.size())
-		{
-			stations_d.erase(stations_d.begin(), stations_d.end());
-			for (auto&el : stacje_tmp)
-			{
-				double x = el->x();
-				double y = el->y();
-				stations_d.push_back(new cDraw_Station(x, y));
-			}
-		}
 		for (auto&el : stations_d)
 		{
 			el->draw_station();
 		}
-
 	}
 	glPopMatrix();
 	glutSwapBuffers();
