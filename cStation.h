@@ -12,6 +12,7 @@
 class cLocomotive;
 
 class cStation : public cPassengerStore {
+	int number_;
 	int shape_; // 1 - circle, 2 - triangle, 3 - square, 4 - rhombus, 5 - pentagon, 6 - star, 7 - cross;
 	int state_; // 0 - save, 1 - dangerous(the number of passengers is close to the maximum value of the capacity), 2 - overcrovded;
 	std::vector<int> colors_; //0 - red, 1 - blue, 2 - yellow, 3 - green, 4 - orange, 5 - purple, 6 - light blue; kolory lini do krórych nale¿y ta stacja
@@ -32,7 +33,7 @@ class cStation : public cPassengerStore {
 public:
 	//kostruktory
 	cStation(int shape = 1, double x = 0, double y = 0, int capacity = 20, int state = 0);
-	cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int shape = 0, double x = 0, double y = 0, int capacity = 20, int state = 0);
+	cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int &ilosc_stacji, int shape = 0, double x = 0, double y = 0, int capacity = 20, int state = 0);
 
 	void spawn_passenger(const int& poziom);
 	// spawns a psssneger, losuje jego kszta³t i dodaje go wektora pasa¿erów stacji, (poziom okreœla jakie figury moga sie pojawic,
@@ -44,6 +45,7 @@ public:
 	bool change(std::list<cStation*> l, const int& i);
 
 	//getery
+	int number() { return number_; }
 	int shape() { return shape_; }
 	int state() { return state_; }
 	std::vector<cLocomotive*> lokomotywy() { return lokomotywy_; }

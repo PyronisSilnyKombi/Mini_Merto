@@ -4,7 +4,6 @@
 #include <list>
 #include<string>
 
-// dziedziczy z cFizyki i cFigury
 class cPassengerStore{
 protected:
 	double x_, y_;

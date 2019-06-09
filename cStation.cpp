@@ -1,8 +1,10 @@
 #include "cStation.h"
 #include <iostream>
 
-cStation::cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int shape, double x, double y, int capacity, int state) : cPassengerStore(x, y, capacity), shape_(shape), state_(state)  {
+cStation::cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int &ilosc_satcji, int shape, double x, double y, int capacity, int state) : cPassengerStore(x, y, capacity), shape_(shape), state_(state)  {
 	this->spawn(stations, r, width, height, poziom_mapy, tmp_lvl);
+	ilosc_satcji++;
+	number_ = ilosc_satcji;
 }
 
 cStation::cStation(int shape, double x, double y, int capacity, int state) : cPassengerStore(x, y, capacity), shape_(shape), state_(state) {
