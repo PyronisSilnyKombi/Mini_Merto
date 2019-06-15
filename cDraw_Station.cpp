@@ -49,6 +49,14 @@ void cDraw_Station::set_x_y(double x, double y)
 	x_ = x;
 	y_ = y;
 }
+double cDraw_Station::get_x()
+{
+	return x_;
+}
+double cDraw_Station::get_y()
+{
+	return y_;
+}
 void cDraw_Station::draw_passengers()
 {
 	glTranslated(0.4, 0.6, 0.0);
@@ -140,4 +148,13 @@ void cDraw_Station::draw_passengers()
 		}break;
 		}
 	}
+}
+bool cDraw_Station::warunek_klikniecia(double glX, double glY)
+{
+	bool war = false;
+	if (glX <= (x_ + 0.3) && glX >= (x_ - 0.3) && glY <= (y_ + 0.3) && glY >= (y_ - 0.3))
+	{
+		war = true;
+	}
+	return war;
 }

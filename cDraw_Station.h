@@ -16,6 +16,9 @@ public:
 	void draw_overcrowd_timer(double angle);
 	void set_color(double r, double g, double b);
 	void set_x_y(double x, double y);
+	double get_x();
+	double get_y();
+	bool warunek_klikniecia(double glX, double glY);
 	//bool is_clicked(double openglX, double openglY);
 	//bool is_unclicked(double openglX, double openglY);
 };

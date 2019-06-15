@@ -33,44 +33,7 @@ void cMap::resize(int width, int height) {
 	glLoadIdentity();
 }
 
-//void cMap::timer() {
-//
-	////int current_time = getTickCount();
-	////auto current_time = std::chrono::high_resolution_clock::now();
-
-	///*std::cout<<current_time<<std::endl;*/
-	////std::cout.flush();
-	//if ((*(figures.begin() + 1))->kolizja(*pilka_)) {
-	//	glutDestroyWindow(1);
-	//}
-	//for (auto itr = figures.begin() + 1; itr != figures.end(); ++itr) {
-	//	if (pilka_->kolizja(*(*itr))) {
-	//		if ((*itr)->kolizja(*pilka_)) {
-	//			std::cout << "kolizja" << std::endl;
-	//			(*itr)->kolizja(*pilka_);
-	//			(*itr)->kolizja(*pilka_);
-	//			(*itr)->kolizja(*pilka_);
-	//			cBlok *klocek;
-	//			klocek = dynamic_cast<cBlok*>(*itr);
-	//			if (klocek != 0) {
-	//				points_--;
-	//				if (points_ == 0) glutDestroyWindow(1);
-	//				figures.erase(itr);
-	//				break;
-	//			}
-	//		}
-	//	}
-
-	//}
-	//pilka_->aktualizuj(GetTickCount());
-	//paletka_->aktualizuj(GetTickCount());
-
-
-	//glutPostRedisplay();
-	//glutTimerFunc(40, timer_binding, 0);
-//}
-
-void cMap::idle() {
+void cMap::timer() {
 
 	std::list<cStation*> stacje_tmp = silnik_.stations();
 	if (stacje_tmp.size() != stations_d.size())
@@ -85,8 +48,28 @@ void cMap::idle() {
 		}
 	}
 
+
 	glutPostRedisplay();
+	glutTimerFunc(40, timer_binding, 0);
 }
+
+//void cMap::idle() {
+//
+//	std::list<cStation*> stacje_tmp = silnik_.stations();
+//	if (stacje_tmp.size() != stations_d.size())
+//	{
+//		stations_d.erase(stations_d.begin(), stations_d.end());
+//		for (auto&el : stacje_tmp)
+//		{
+//			double x = el->x();
+//			double y = el->y();
+//			std::vector <int> p = el->passengers();
+//			stations_d.push_back(new cDraw_Station(x, y, p));
+//		}
+//	}
+//
+//	glutPostRedisplay();
+//}
 
 void cMap::display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -97,6 +80,10 @@ void cMap::display() {
 		{
 			el->draw_station();
 		}
+		for (auto&el : lines_d)
+		{
+			el->draw_line();
+		}
 	}
 	glPopMatrix();
 	glutSwapBuffers();
@@ -105,12 +92,13 @@ void cMap::display() {
 void cMap::set_callbacks() {
 	glutDisplayFunc(display_binding);
 	glutReshapeFunc(resize_binding);
-	//glutMotionFunc(mouse_move_binding);
 	glutKeyboardFunc(key_binding);
-	//glutTimerFunc(40, timer_binding, 0);
-	glutIdleFunc(idle_binding);
+	glutTimerFunc(40, timer_binding, 0);
+	//glutIdleFunc(idle_binding);
 	//glutMouseFunc(mouse_binding);
-	glutPassiveMotionFunc(mouse_move_binding);
+	//glutPassiveMotionFunc(mouse_move_binding);
+	glutMouseFunc(onMouseButton_binding);
+	glutMotionFunc(mouse_move_binding);
 }
 
 void cMap::init(int argc, char **argv, const char *window_name) {
@@ -209,9 +197,40 @@ cMap::~cMap() {
 		delete el;*/
 }
 
-void cMap::mouse_move(int x, int y) {
+void cMap::mouse_move(int x, int y) 
+{
+	for (auto &el : stations_d)
+	{
+		double openglX = ((double)x - 400) / 800 * 20;
+		double openglY = ((-1)*(double)y + 300) / 600 * 20;
+		bool warunek = el->warunek_klikniecia(openglX, openglY);
+		if (warunek_klikniecia_ == true)
+		{
+			lines_d.back()->set_x_y_k(openglX, openglY);
+		}
+	}
 
-	double openglX = ((double)x - 400) / 800 * 20;
-	double openglY = (-(double)y + 300) / 600 * 20;
-	/*paletka_->follow(openglX, openglY);*/
+}
+void cMap::onMouseButton(int button, int state, int x, int y)
+{
+	for (auto&el : stations_d)
+	{
+		double openglX = ((double)x - 400) / 800 * 20;
+		double openglY = ((-1)*(double)y + 300) / 600 * 20;
+		bool warunek = el->warunek_klikniecia(openglX, openglY);
+		if (warunek == true)
+		{
+			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+			{
+				warunek_klikniecia_ = true;
+				double tmpx = el->get_x();
+				double tmpy = el->get_y();
+				lines_d.push_back(new cDraw_Line(tmpx, tmpy, openglX, openglY));
+			}
+		}
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+		{
+			warunek_klikniecia_ = false;
+		}
+	}
 }
