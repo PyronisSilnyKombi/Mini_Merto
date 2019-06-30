@@ -9,6 +9,7 @@ class cDraw_Station {
 	double x_, y_;
 	double color;
 	std::vector <int> passengers_;
+	std::vector<bool> czy_nalezy_do_linii;
 public:
 	cDraw_Station(double x, double y,std::vector <int> passengers);
 	void draw_station();

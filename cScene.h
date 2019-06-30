@@ -11,6 +11,9 @@
 #include <list>
 #include <algorithm>
 #include <iostream>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 
 
@@ -29,9 +32,14 @@ public:
 	cEngine silnik_;
 protected:
 	std::list<cDraw_Station*> stations_d;
+
 	bool warunek_klikniecia_;
+	bool warunek_wspolrzednych_;
+	int tmp_id;
 
 	std::vector<cDraw_Line*> lines_d;
+
+	bool was_clicked;
 	cDraw_Line* adres_linii;
 	//std::vector<cDraw_Locomotive*> locomotives_d;
 

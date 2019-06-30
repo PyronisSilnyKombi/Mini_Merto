@@ -2,7 +2,8 @@
 
 cDraw_Station::cDraw_Station(double x, double y, std::vector <int> passengers) : x_(x), y_(y), passengers_(passengers)
 {
-
+	for (int i = 0; i < 7; i++)
+		czy_nalezy_do_linii.push_back(false);
 }
 //cDraw_Station::cDraw_Station() {
 //

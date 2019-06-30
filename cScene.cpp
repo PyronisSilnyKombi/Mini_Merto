@@ -4,6 +4,9 @@
 
 cMap::cMap()
 {
+	tmp_id = -1;
+	warunek_wspolrzednych_ = false;
+	was_clicked = false;
 	//cEngine silnik;
 	//silnik_ = silnik;
 
@@ -199,20 +202,57 @@ cMap::~cMap() {
 
 void cMap::mouse_move(int x, int y) 
 {
+	int itr = 0;
+	
 	for (auto &el : stations_d)
+	//for(std::list<cDraw_Station*>::iterator el = stations_d.begin(); el != stations_d.end(); el++ )
 	{
 		double openglX = ((double)x - 400) / 800 * 20;
 		double openglY = ((-1)*(double)y + 300) / 600 * 20;
 		bool warunek = el->warunek_klikniecia(openglX, openglY);
-		if (warunek_klikniecia_ == true)
+		if (warunek_wspolrzednych_ == false)
 		{
-			lines_d.back()->set_x_y_k(openglX, openglY);
+			if (warunek == true)
+			{
+				double tmpy = el->get_y();
+				double tmpx = el->get_x();
+				double kat = atan2(openglY - tmpy, openglX - tmpx);
+				double tmpkat;
+				if (kat > 0)
+					tmpkat = kat * 180 / M_PI;
+				else
+					tmpkat = 180 + (180 + kat * 180 / M_PI);
+				double dlugosc = sqrt(pow(openglX - tmpx, 2) + pow(openglY - tmpy, 2));
+				lines_d.back()->set_angle_(tmpkat);
+				lines_d.back()->set_length_(dlugosc);
+				tmp_id = itr;
+				warunek_wspolrzednych_ = true;
+			}
 		}
+		else
+		{
+			if (itr == tmp_id)
+			{
+				double tmpy = el->get_y();
+				double tmpx = el->get_x();
+				double kat = atan2(openglY - tmpy, openglX - tmpx);
+				double tmpkat;
+				if (kat > 0)
+					tmpkat = kat * 180 / M_PI;
+				else
+					tmpkat = 180 + (180 + kat * 180 / M_PI);
+				double dlugosc = sqrt(pow(openglX - tmpx, 2) + pow(openglY - tmpy, 2));
+				lines_d.back()->set_angle_(tmpkat);
+				lines_d.back()->set_length_(dlugosc);
+			}
+		}
+		itr++;
 	}
 
 }
 void cMap::onMouseButton(int button, int state, int x, int y)
 {
+	// rysowanie nowych linii
 	for (auto&el : stations_d)
 	{
 		double openglX = ((double)x - 400) / 800 * 20;
@@ -225,12 +265,73 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 				warunek_klikniecia_ = true;
 				double tmpx = el->get_x();
 				double tmpy = el->get_y();
-				lines_d.push_back(new cDraw_Line(tmpx, tmpy, openglX, openglY));
+				lines_d.push_back(new cDraw_Line(tmpx, tmpy, openglX, openglY, 0));
+				was_clicked = true;
 			}
 		}
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 		{
-			warunek_klikniecia_ = false;
+				bool czy_nalezy = false;
+				for (auto&el2 : stations_d)
+				{
+					czy_nalezy = el2->warunek_klikniecia(openglX, openglY);
+					if (czy_nalezy == true)
+					{
+						break; break;
+					}
+				}
+				if (czy_nalezy == false && lines_d.size() != 0 && was_clicked == true)
+				{
+					lines_d.erase(lines_d.end() - 1);
+					break; break; break;
+				}
+				else
+				{
+					lines_d.back()->set_x_y_k(openglX, openglY); // wspolrzedne koncowe sa zle wyznaczane co doprowadza do niepoprawnego usuwania linii, do poprawienia
+				}
+				warunek_klikniecia_ = false;
+				warunek_wspolrzednych_ = false;
+				was_clicked = false;
+		}
+	}
+
+	// usuwanie dzialajacych linii
+
+	int iter = 0;
+	for (auto&el3 : lines_d)
+	{
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && was_clicked == false)
+		{
+			double openglX = ((double)x - 400) / 800 * 20;
+			double openglY = ((-1)*(double)y + 300) / 600 * 20;
+			//bool warunek_usuniecia = el->warunek_usuniecia_linii(openglX, openglY);
+			//if (warunek_usuniecia == true && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+			//{
+			//	lines_d.erase(lines_d.begin() + iterator);
+			//}
+			//iterator++;
+
+			//Poniewa¿ linie ³¹cz¹ce stacje z regu³y bêd¹ przebiega³y pod ró¿nymi k¹tami, trudno by³oby ustaliæ dok³adny hitbox kiedy linia zostanie
+			//usuwana. Dlatego linie s¹ usuwane w momencie gdy gracz kliknie lewym przyciskiem myszy w pobli¿u miejsca gdzie znajduje siê œrodek linii.
+
+			// Wyznazanie œrodka linii
+
+			double tmp_x_p = el3->get_x_p();
+			double tmp_y_p = el3->get_y_p();
+			double tmp_x_k = el3->get_x_k();
+			double tmp_y_k = el3->get_y_k();
+
+			double x_sr = (tmp_x_p + tmp_x_k) / 2;
+			double y_sr = (tmp_y_p + tmp_y_k) / 2;
+
+			el3->set_x_y_sr(x_sr, y_sr);
+			bool czy_usunac = el3->warunek_usuniecia_linii(openglX, openglY);
+			if (czy_usunac == true)
+			{
+				lines_d.erase(lines_d.begin() + iter);
+				iter--;
+			}
+			iter++;
 		}
 	}
 }
