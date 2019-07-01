@@ -46,8 +46,9 @@ void cMap::timer() {
 		{
 			double x = el->x();
 			double y = el->y();
+			int shape = el->shape();
 			std::vector <int> p = el->passengers();
-			stations_d.push_back(new cDraw_Station(x, y, p));
+			stations_d.push_back(new cDraw_Station(x, y, p, shape));
 		}
 	}
 

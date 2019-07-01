@@ -7,11 +7,12 @@
 
 class cDraw_Station {
 	double x_, y_;
-	double color;
+	//double color;
+	int shape_;
 	std::vector <int> passengers_;
 	std::vector<bool> czy_nalezy_do_linii;
 public:
-	cDraw_Station(double x, double y,std::vector <int> passengers);
+	cDraw_Station(double x, double y,std::vector <int> passengers, int shape);
 	void draw_station();
 	void draw_passengers();
 	void draw_overcrowd_timer(double angle);
