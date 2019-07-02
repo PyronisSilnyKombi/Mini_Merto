@@ -204,44 +204,43 @@ void cDraw_Station::draw_station()
 	}break;
 	case 4:
 	{
-	glPushMatrix();
-
-	glTranslated(x_, y_, 0.0);
-	glRotated(0, 1.0, 0.0, 0.0);
-	glRotated(0, 0.0, 1.0, 0.0);
-	glRotated(0, 0.0, 0.0, 1.0);
-
-	glColor3d(1.0, 1.0, 1.0);
-
-	glBegin(GL_POLYGON);
-	{
-		glVertex3d(-0.3, 0, 0);
-		glVertex3d(0, 0.3, 0);
-		glVertex3d(0.3, 0, 0);
-		glVertex3d(0, -0.3, 0);
-	}
-	glEnd();
-	glPushMatrix();
-	{
+		glPushMatrix();
 		glTranslated(x_, y_, 0.0);
 		glRotated(0, 1.0, 0.0, 0.0);
 		glRotated(0, 0.0, 1.0, 0.0);
 		glRotated(0, 0.0, 0.0, 1.0);
 
-		glColor3d(0.0, 0.0, 0.0);
+		glColor3d(1.0, 1.0, 1.0);
 
 		glBegin(GL_POLYGON);
 		{
-			glVertex3d(-0.4, 0, 0);
-			glVertex3d(0, 0.4, 0);
-			glVertex3d(0.4, 0, 0);
-			glVertex3d(0, -0.4, 0);
+			glVertex3d(-0.3, 0, 0);
+			glVertex3d(0, 0.3, 0);
+			glVertex3d(0.3, 0, 0);
+			glVertex3d(0, -0.3, 0);
+
 		}
 		glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
+		{
+			glPushMatrix();
+			glRotated(0, 1.0, 0.0, 0.0);
+			glRotated(0, 0.0, 1.0, 0.0);
+			glRotated(0, 0.0, 0.0, 1.0);
 
+			glColor3d(0.0, 0.0, 0.0);
+
+			glBegin(GL_POLYGON);
+			{
+				glVertex3d(-0.4, 0, 0);
+				glVertex3d(0, 0.4, 0);
+				glVertex3d(0.4, 0, 0);
+				glVertex3d(0, -0.4, 0);
+			}
+			glEnd();
+
+			glPopMatrix();
+		}
+		glPopMatrix();
 		glPushMatrix();
 		glTranslated(x_, y_, 0.0);
 

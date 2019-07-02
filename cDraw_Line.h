@@ -1,5 +1,9 @@
 #pragma once
 #include <GL/freeglut.h>
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 
 class cDraw_Line {
 	double x_p, y_p;
@@ -16,6 +20,9 @@ public:
 	double get_y_p();
 	double get_x_k();
 	double get_y_k();
+	double get_angle_();
+	double get_x_sr_();
+	double get_y_sr_();
 	void set_x_y_p(double x, double y);
 	void set_x_y_k(double x, double y);
 	void set_angle_(double angle);

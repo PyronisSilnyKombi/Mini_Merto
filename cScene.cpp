@@ -254,6 +254,7 @@ void cMap::mouse_move(int x, int y)
 }
 void cMap::onMouseButton(int button, int state, int x, int y)
 {
+	bool linia_dodana = false;
 	// rysowanie nowych linii
 	for (auto&el : stations_d)
 	{
@@ -283,7 +284,7 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 					{
 						x_k = el2->get_x();
 						y_k = el2->get_y();
-
+						lines_d.back()->set_x_y_k(x_k, y_k);
 						double kat = atan2(y_k - y_p_, x_k - x_p_);
 						double tmpkat;
 						if (kat > 0)
@@ -293,6 +294,7 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 						double dlugosc = sqrt(pow(x_k - x_p_, 2) + pow(y_k - y_p_, 2));
 						lines_d.back()->set_angle_(tmpkat);
 						lines_d.back()->set_length_(dlugosc);
+						linia_dodana = true;
 
 						break; break;
 					}
@@ -302,53 +304,54 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 					lines_d.erase(lines_d.end() - 1);
 					break; break; break;
 				}
-				else
-				{
-					lines_d.back()->set_x_y_k(openglX, openglY); // wspolrzedne koncowe sa zle wyznaczane co doprowadza do niepoprawnego usuwania linii, do poprawienia
-				}
+				//else if(lines_d.size() != 0 && warunek == true)
+				//{
+				//	lines_d.back()->set_x_y_k(x_k, y_k);
+				//}
 				warunek_klikniecia_ = false;
 				warunek_wspolrzednych_ = false;
 				was_clicked = false;
+				break; break;
 		}
 	}
 
 	// usuwanie dzialajacych linii
 
-	int iter = 0;
-	for (auto&el3 : lines_d)
+	if (linia_dodana == false)
 	{
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && was_clicked == false)
+		int iter = 0;
+		for (auto&el3 : lines_d)
 		{
-			double openglX = ((double)x - 400) / 800 * 20;
-			double openglY = ((-1)*(double)y + 300) / 600 * 20;
-			//bool warunek_usuniecia = el->warunek_usuniecia_linii(openglX, openglY);
-			//if (warunek_usuniecia == true && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-			//{
-			//	lines_d.erase(lines_d.begin() + iterator);
-			//}
-			//iterator++;
-
-			//Poniewa¿ linie ³¹cz¹ce stacje z regu³y bêd¹ przebiega³y pod ró¿nymi k¹tami, trudno by³oby ustaliæ dok³adny hitbox kiedy linia zostanie
-			//usuwana. Dlatego linie s¹ usuwane w momencie gdy gracz kliknie lewym przyciskiem myszy w pobli¿u miejsca gdzie znajduje siê œrodek linii.
-
-			// Wyznazanie œrodka linii
-
-			double tmp_x_p = el3->get_x_p();
-			double tmp_y_p = el3->get_y_p();
-			double tmp_x_k = el3->get_x_k();
-			double tmp_y_k = el3->get_y_k();
-
-			double x_sr = (tmp_x_p + tmp_x_k) / 2;
-			double y_sr = (tmp_y_p + tmp_y_k) / 2;
-
-			el3->set_x_y_sr(x_sr, y_sr);
-			bool czy_usunac = el3->warunek_usuniecia_linii(openglX, openglY);
-			if (czy_usunac == true)
+			if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && was_clicked == false)
 			{
-				lines_d.erase(lines_d.begin() + iter);
-				iter--;
+				double openglX = ((double)x - 400) / 800 * 20;
+				double openglY = ((-1)*(double)y + 300) / 600 * 20;
+				//bool warunek_usuniecia = el->warunek_usuniecia_linii(openglX, openglY);
+				//if (warunek_usuniecia == true && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+				//{
+				//	lines_d.erase(lines_d.begin() + iterator);
+				//}
+				//iterator++;
+
+				// Wyznazanie œrodka linii
+
+				double tmp_x_p = el3->get_x_p();
+				double tmp_y_p = el3->get_y_p();
+				double tmp_x_k = el3->get_x_k();
+				double tmp_y_k = el3->get_y_k();
+
+				double x_sr = (tmp_x_p + tmp_x_k) / 2;
+				double y_sr = (tmp_y_p + tmp_y_k) / 2;
+
+				el3->set_x_y_sr(x_sr, y_sr);
+				bool czy_usunac = el3->warunek_usuniecia_linii(openglX, openglY);
+				if (czy_usunac == true)
+				{
+					lines_d.erase(lines_d.begin() + iter);
+					iter--;
+				}
+				iter++;
 			}
-			iter++;
 		}
 	}
 }

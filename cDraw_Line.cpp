@@ -60,23 +60,33 @@ void cDraw_Line::set_length_(double length)
 {
 	length_ = length;
 }
-//bool cDraw_Line::warunek_usuniecia_linii(double glX, double glY)
-//{
-//	bool zmienna = false;
-//	glPushMatrix();
-//	glTranslated(x_p, y_p, 0.0);
-//	glRotated(angle_, 0.0, 0.0, 1.0);
-//	if (glX >= 0.4 && glX <= length_ - 0.4 && glY >= -0.1 && glY <= 0.1)
-//	{
-//		zmienna = true;
-//	}
-//	glPopMatrix();
-//	return zmienna;
-//}
 bool cDraw_Line::warunek_usuniecia_linii(double glX, double glY)
 {
 	bool zmienna = false;
-	if (glX >= x_sr - 0.1*length_ && glX <= x_sr + 0.1*length_ && glY >= y_sr - 0.1*length_ && glY <= y_sr + 0.1*length_)
+	// Wyznaczanie równañ liniowych bêd¹cych wartoœciami granicznymi dla wspó³rzêdnej y
+	double a, k¹t, b1, b2, x_œrednie, y_œrednie; // x i y œrednie pos³u¿¹ do wyznaczenia b. b jest jedynym elementem który ró¿ni siê w obu równaniach,
+												 // dlatego oddzielnie wyznaczane s¹ tylko b1 i b2.
+	k¹t = this->get_angle_();
+	a = tan((k¹t*M_PI)/180);
+	x_œrednie = this->get_x_sr_();
+	y_œrednie = this->get_y_sr_();
+	double y1_œrednie, y2_œrednie, d; // d to odleglosc miedzy wartosciami y1 i y2. Aby otrzymac wartosci y1 i y2 które s¹ potrzebne do wyliczenia b,
+									  // do y_œredniego trzeba kolejno dla y1 dodaæ d/2 i dla y2 odj¹æ d/2.
+	d = 0.2 / (sin(M_PI / 2 - k¹t * (M_PI / 180)));
+	y1_œrednie = y_œrednie + d / 2;
+	y2_œrednie = y_œrednie - d / 2;
+
+	b1 = y1_œrednie - a * x_œrednie;
+	b2 = y2_œrednie - a * x_œrednie;
+	// równania granic to: y = a*x + b1 i y = a*x + b2
+
+	// Sprawdzanie warunku, do wartoœci x_p, x_k dodane/odjete zostanie 0.4 po to, aby warunek usuwania linii nie uruchamia³ siê po klikniêciu na
+	// fragment linii pokrywaj¹cy siê ze stacj¹.
+	if (glX >= x_p - 0.1 && glX <= x_k + 0.1 && glY >= a * glX + b2 -0.1 && glY <= a * glX + b1 + 0.1)
+	{
+		zmienna = true;
+	}
+	if (glX >= x_k - 0.1 && glX <= x_p + 0.1 && glY <= a * glX + b2 + 0.1 && glY >= a * glX + b1 - 0.1)
 	{
 		zmienna = true;
 	}
@@ -86,4 +96,16 @@ void cDraw_Line::set_x_y_sr(double x, double y)
 {
 	x_sr = x;
 	y_sr = y;
+}
+double cDraw_Line::get_angle_()
+{
+	return angle_;
+}
+double cDraw_Line::get_x_sr_()
+{
+	return x_sr;
+}
+double cDraw_Line::get_y_sr_()
+{
+	return y_sr;
 }
