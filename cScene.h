@@ -36,6 +36,7 @@ protected:
 	bool warunek_klikniecia_;
 	bool warunek_wspolrzednych_;
 	int tmp_id;
+	double x_p_, y_p_; // Pozycja stacji z której chcemy poprowadziæ liniê. Jest potrzebna do dok³adnego narysowania linii ³¹cz¹cej dwie stacje.
 
 	std::vector<cDraw_Line*> lines_d;
 

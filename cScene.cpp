@@ -206,7 +206,6 @@ void cMap::mouse_move(int x, int y)
 	int itr = 0;
 	
 	for (auto &el : stations_d)
-	//for(std::list<cDraw_Station*>::iterator el = stations_d.begin(); el != stations_d.end(); el++ )
 	{
 		double openglX = ((double)x - 400) / 800 * 20;
 		double openglY = ((-1)*(double)y + 300) / 600 * 20;
@@ -217,6 +216,8 @@ void cMap::mouse_move(int x, int y)
 			{
 				double tmpy = el->get_y();
 				double tmpx = el->get_x();
+				x_p_ = tmpx;
+				y_p_ = tmpy;
 				double kat = atan2(openglY - tmpy, openglX - tmpx);
 				double tmpkat;
 				if (kat > 0)
@@ -272,12 +273,27 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 		}
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 		{
+			double x_k;
+			double y_k;
 				bool czy_nalezy = false;
 				for (auto&el2 : stations_d)
 				{
 					czy_nalezy = el2->warunek_klikniecia(openglX, openglY);
 					if (czy_nalezy == true)
 					{
+						x_k = el2->get_x();
+						y_k = el2->get_y();
+
+						double kat = atan2(y_k - y_p_, x_k - x_p_);
+						double tmpkat;
+						if (kat > 0)
+							tmpkat = kat * 180 / M_PI;
+						else
+							tmpkat = 180 + (180 + kat * 180 / M_PI);
+						double dlugosc = sqrt(pow(x_k - x_p_, 2) + pow(y_k - y_p_, 2));
+						lines_d.back()->set_angle_(tmpkat);
+						lines_d.back()->set_length_(dlugosc);
+
 						break; break;
 					}
 				}
