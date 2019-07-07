@@ -38,9 +38,12 @@ protected:
 	int tmp_id;
 	double x_p_, y_p_; // Pozycja stacji z której chcemy poprowadziæ liniê. Jest potrzebna do dok³adnego narysowania linii ³¹cz¹cej dwie stacje.
 
-	std::vector<cDraw_Line*> lines_d;
+	std::vector<cDraw_Line*> lines_d[7]; 
 
+	std::list<cStation*> line_stations_[7]; // Lista adresów stacji w linii przekazywana do silnika.
+										
 	bool was_clicked;
+	int used_color_;
 	cDraw_Line* adres_linii;
 	//std::vector<cDraw_Locomotive*> locomotives_d;
 
@@ -59,4 +62,5 @@ public:
 	//void mouse(int button, int state, int x, int y);
 	void mouse_move(int x, int y);
 	void onMouseButton(int button, int state, int x, int y);
+	void set_used_color_(int c);
 };

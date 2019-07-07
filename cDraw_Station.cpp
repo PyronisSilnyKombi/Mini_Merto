@@ -3,7 +3,11 @@
 cDraw_Station::cDraw_Station(double x, double y, std::vector <int> passengers, int shape) : x_(x), y_(y), passengers_(passengers), shape_(shape)
 {
 	for (int i = 0; i < 7; i++)
-		czy_nalezy_do_linii.push_back(false);
+	{
+		czy_nalezy_do_linii_[i] = false;
+		iloœæ_po³¹czeñ_dla_stacji_[i] = 0;
+	}
+
 }
 
 
@@ -621,4 +625,36 @@ bool cDraw_Station::warunek_klikniecia(double glX, double glY)
 		war = true;
 	}
 	return war;
+}
+std::vector <int> cDraw_Station::get_passengers_()
+{
+	return passengers_;
+}
+int cDraw_Station::get_shape_()
+{
+	return shape_;
+}
+int cDraw_Station::get_iloœæ_po³¹czeñ_dla_stacji_(int color)
+{
+	return iloœæ_po³¹czeñ_dla_stacji_[color];
+}
+void cDraw_Station::set_iloœæ_po³¹czeñ_dla_stacji_(int number, int color)
+{
+	iloœæ_po³¹czeñ_dla_stacji_[color] = number;
+}
+void cDraw_Station::zwiêksz_iloœæ_po³¹czeñ_dla_stacji_(int color)
+{
+	iloœæ_po³¹czeñ_dla_stacji_[color]++;
+}
+void cDraw_Station::zmniejsz_iloœæ_po³¹czeñ_dla_stacji_(int color)
+{
+	iloœæ_po³¹czeñ_dla_stacji_[color]--;
+}
+bool cDraw_Station::get_czy_nalezy_do_linii_(int c)
+{
+	return czy_nalezy_do_linii_[c];
+}
+void cDraw_Station::set_czy_nalezy_do_linii_(bool tmp, int c)
+{
+	czy_nalezy_do_linii_[c] = tmp;
 }

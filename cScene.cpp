@@ -7,6 +7,8 @@ cMap::cMap()
 	tmp_id = -1;
 	warunek_wspolrzednych_ = false;
 	was_clicked = false;
+	used_color_ = 0;
+
 	//cEngine silnik;
 	//silnik_ = silnik;
 
@@ -84,9 +86,12 @@ void cMap::display() {
 		{
 			el->draw_station();
 		}
-		for (auto&el : lines_d)
+		for (int i = 0; i < 7; i++)
 		{
-			el->draw_line();
+			for (auto&el : lines_d[i])
+			{
+				el->draw_line();
+			}
 		}
 	}
 	glPopMatrix();
@@ -128,8 +133,8 @@ void cMap::init(int argc, char **argv, const char *window_name) {
 }
 
 void cMap::key(unsigned char key, int x, int y) {
-	/*switch (key) {
-	case 'w':
+	switch (key) {
+	/*case 'w':
 		figures[active_id_]->move(0, 0.1);
 		break;
 	case 's':
@@ -192,8 +197,40 @@ void cMap::key(unsigned char key, int x, int y) {
 		auto p2 = dynamic_cast<cStation*>(figures[active_id_]);
 		if (p2) p2->reduce(1);
 		break;
-	}
 	}*/
+	case '1':
+	{
+		this->set_used_color_(0);
+	}break;
+	case '2':
+	{
+		this->set_used_color_(1);
+	}break;
+	case '3':
+	{
+		this->set_used_color_(2);
+	}break;
+	case '4':
+	{
+		this->set_used_color_(3);
+	}break;
+	case '5':
+	{
+		this->set_used_color_(4);
+	}break;
+	case '6':
+	{
+		this->set_used_color_(5);
+	}break;
+	case '7':
+	{
+		this->set_used_color_(6);
+	}break;
+	}
+}
+void cMap::set_used_color_(int c)
+{
+	used_color_ = c;
 }
 
 cMap::~cMap() {
@@ -205,17 +242,19 @@ void cMap::mouse_move(int x, int y)
 {
 	int itr = 0;
 	
-	for (auto &el : stations_d)
+	for (auto &elem : stations_d)
 	{
 		double openglX = ((double)x - 400) / 800 * 20;
 		double openglY = ((-1)*(double)y + 300) / 600 * 20;
-		bool warunek = el->warunek_klikniecia(openglX, openglY);
-		if (warunek_wspolrzednych_ == false)
+		bool warunek = elem->warunek_klikniecia(openglX, openglY);
+		int iloœæ_po³¹czeñ = elem->get_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+		bool czy_nale¿y_do_linii_ = elem->get_czy_nalezy_do_linii_(used_color_);
+		if (warunek_wspolrzednych_ == false && iloœæ_po³¹czeñ < 2 && (line_stations_[used_color_].size() == 0 || czy_nale¿y_do_linii_ == true))
 		{
 			if (warunek == true)
 			{
-				double tmpy = el->get_y();
-				double tmpx = el->get_x();
+				double tmpy = elem->get_y();
+				double tmpx = elem->get_x();
 				x_p_ = tmpx;
 				y_p_ = tmpy;
 				double kat = atan2(openglY - tmpy, openglX - tmpx);
@@ -225,18 +264,18 @@ void cMap::mouse_move(int x, int y)
 				else
 					tmpkat = 180 + (180 + kat * 180 / M_PI);
 				double dlugosc = sqrt(pow(openglX - tmpx, 2) + pow(openglY - tmpy, 2));
-				lines_d.back()->set_angle_(tmpkat);
-				lines_d.back()->set_length_(dlugosc);
+				lines_d[used_color_].back()->set_angle_(tmpkat);
+				lines_d[used_color_].back()->set_length_(dlugosc);
 				tmp_id = itr;
 				warunek_wspolrzednych_ = true;
 			}
 		}
 		else
 		{
-			if (itr == tmp_id)
+			if (itr == tmp_id && iloœæ_po³¹czeñ < 2 && (line_stations_[used_color_].size() == 0 || czy_nale¿y_do_linii_ == true))
 			{
-				double tmpy = el->get_y();
-				double tmpx = el->get_x();
+				double tmpy = elem->get_y();
+				double tmpx = elem->get_x();
 				double kat = atan2(openglY - tmpy, openglX - tmpx);
 				double tmpkat;
 				if (kat > 0)
@@ -244,8 +283,8 @@ void cMap::mouse_move(int x, int y)
 				else
 					tmpkat = 180 + (180 + kat * 180 / M_PI);
 				double dlugosc = sqrt(pow(openglX - tmpx, 2) + pow(openglY - tmpy, 2));
-				lines_d.back()->set_angle_(tmpkat);
-				lines_d.back()->set_length_(dlugosc);
+				lines_d[used_color_].back()->set_angle_(tmpkat);
+				lines_d[used_color_].back()->set_length_(dlugosc);
 			}
 		}
 		itr++;
@@ -261,16 +300,22 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 		double openglX = ((double)x - 400) / 800 * 20;
 		double openglY = ((-1)*(double)y + 300) / 600 * 20;
 		bool warunek = el->warunek_klikniecia(openglX, openglY);
-		if (warunek == true)
+		int iloœæ_po³¹czeñ = el->get_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+		bool czy_nale¿y_do_linii_ = el->get_czy_nalezy_do_linii_(used_color_);
+		if (iloœæ_po³¹czeñ < 2 && (line_stations_[used_color_].size() == 0 || czy_nale¿y_do_linii_ == true))
 		{
-			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+			if (warunek == true)
 			{
-				warunek_klikniecia_ = true;
-				double tmpx = el->get_x();
-				double tmpy = el->get_y();
-				lines_d.push_back(new cDraw_Line(tmpx, tmpy, openglX, openglY, 0));
-				was_clicked = true;
+				if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+				{
+					warunek_klikniecia_ = true;
+					double tmpx = el->get_x();
+					double tmpy = el->get_y();
+					lines_d[used_color_].push_back(new cDraw_Line(tmpx, tmpy, openglX, openglY, 0, used_color_));
+					was_clicked = true;
+				}
 			}
+
 		}
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 		{
@@ -284,7 +329,8 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 					{
 						x_k = el2->get_x();
 						y_k = el2->get_y();
-						lines_d.back()->set_x_y_k(x_k, y_k);
+
+						lines_d[used_color_].back()->set_x_y_k(x_k, y_k);
 						double kat = atan2(y_k - y_p_, x_k - x_p_);
 						double tmpkat;
 						if (kat > 0)
@@ -292,16 +338,31 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 						else
 							tmpkat = 180 + (180 + kat * 180 / M_PI);
 						double dlugosc = sqrt(pow(x_k - x_p_, 2) + pow(y_k - y_p_, 2));
-						lines_d.back()->set_angle_(tmpkat);
-						lines_d.back()->set_length_(dlugosc);
+						lines_d[used_color_].back()->set_angle_(tmpkat);
+						lines_d[used_color_].back()->set_length_(dlugosc);
+						//el->zwiêksz_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+						for (auto&el3 : stations_d)
+						{
+							double tmpx = el3->get_x();
+							double tmpy = el3->get_y();
+							if (tmpx == x_p_ && tmpy == y_p_)
+							{
+								el3->zwiêksz_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+								int iloœæ_po³¹czeñ = el3->get_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+								std::cout << iloœæ_po³¹czeñ << std::endl;
+								el3->set_czy_nalezy_do_linii_(true, used_color_);
+							}
+						}
+						el2->zwiêksz_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+						el2->set_czy_nalezy_do_linii_(true, used_color_);
 						linia_dodana = true;
 
 						break; break;
 					}
 				}
-				if (czy_nalezy == false && lines_d.size() != 0 && was_clicked == true)
+				if (czy_nalezy == false && lines_d[used_color_].size() != 0 && was_clicked == true)
 				{
-					lines_d.erase(lines_d.end() - 1);
+					lines_d[used_color_].erase(lines_d[used_color_].end() - 1);
 					break; break; break;
 				}
 				//else if(lines_d.size() != 0 && warunek == true)
@@ -311,7 +372,11 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 				warunek_klikniecia_ = false;
 				warunek_wspolrzednych_ = false;
 				was_clicked = false;
+				std::cout << lines_d[used_color_].size() << std::endl;
+				//int iloœæ_po³¹czeñ_g = el->get_iloœæ_po³¹czeñ_dla_stacji_(used_color_);
+				//std::cout << iloœæ_po³¹czeñ_g << std::endl;
 				break; break;
+
 		}
 	}
 
@@ -319,39 +384,119 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 
 	if (linia_dodana == false)
 	{
-		int iter = 0;
-		for (auto&el3 : lines_d)
+		for (int i = 0; i < 7; i++)
 		{
-			if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && was_clicked == false)
+			int iter = 0;
+			for (auto&el3 : lines_d[i])
 			{
-				double openglX = ((double)x - 400) / 800 * 20;
-				double openglY = ((-1)*(double)y + 300) / 600 * 20;
-				//bool warunek_usuniecia = el->warunek_usuniecia_linii(openglX, openglY);
-				//if (warunek_usuniecia == true && button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-				//{
-				//	lines_d.erase(lines_d.begin() + iterator);
-				//}
-				//iterator++;
-
-				// Wyznazanie œrodka linii
-
-				double tmp_x_p = el3->get_x_p();
-				double tmp_y_p = el3->get_y_p();
-				double tmp_x_k = el3->get_x_k();
-				double tmp_y_k = el3->get_y_k();
-
-				double x_sr = (tmp_x_p + tmp_x_k) / 2;
-				double y_sr = (tmp_y_p + tmp_y_k) / 2;
-
-				el3->set_x_y_sr(x_sr, y_sr);
-				bool czy_usunac = el3->warunek_usuniecia_linii(openglX, openglY);
-				if (czy_usunac == true)
+				if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && was_clicked == false)
 				{
-					lines_d.erase(lines_d.begin() + iter);
-					iter--;
+					double openglX = ((double)x - 400) / 800 * 20;
+					double openglY = ((-1)*(double)y + 300) / 600 * 20;
+
+					// Wyznazanie œrodka linii
+
+					double tmp_x_p = el3->get_x_p();
+					double tmp_y_p = el3->get_y_p();
+					double tmp_x_k = el3->get_x_k();
+					double tmp_y_k = el3->get_y_k();
+					int color = el3->get_color_();
+
+					double x_sr = (tmp_x_p + tmp_x_k) / 2;
+					double y_sr = (tmp_y_p + tmp_y_k) / 2;
+
+					el3->set_x_y_sr(x_sr, y_sr);
+					bool czy_usunac = el3->warunek_usuniecia_linii(openglX, openglY);
+					if (czy_usunac == true)
+					{
+						lines_d[i].erase(lines_d[i].begin() + iter);
+						for (auto&el : stations_d)
+						{
+							double tmpx = el->get_x();
+							double tmpy = el->get_y();
+							if (tmpx == tmp_x_p && tmpy == tmp_y_p)
+							{
+								el->zmniejsz_iloœæ_po³¹czeñ_dla_stacji_(color);
+								int iloœæ_po³¹czeñ = el->get_iloœæ_po³¹czeñ_dla_stacji_(color);
+								if (iloœæ_po³¹czeñ == 0)
+								{
+									el->set_czy_nalezy_do_linii_(false, color);
+								}
+							}
+							if (tmpx == tmp_x_k && tmpy == tmp_y_k)
+							{
+								el->zmniejsz_iloœæ_po³¹czeñ_dla_stacji_(color);
+								int iloœæ_po³¹czeñ = el->get_iloœæ_po³¹czeñ_dla_stacji_(color);
+								if (iloœæ_po³¹czeñ == 0)
+								{
+									el->set_czy_nalezy_do_linii_(false, color);
+								}
+							}
+						}
+						iter--;
+					}
+					iter++;
 				}
-				iter++;
 			}
+		}
+	}
+	//	 Wyznaczanie adresow stacji poczatkowej i koncowej linii danego koloru
+
+	if (linia_dodana == true)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			for (auto&el1 : lines_d[i])
+			{
+				double tmp_x_p = el1->get_x_p();
+				double tmp_y_p = el1->get_y_p();
+				double tmp_x_k = el1->get_x_k();
+				double tmp_y_k = el1->get_y_k();
+
+				for (auto&el : stations_d)
+				{
+					double tmp_x, tmp_y;
+					tmp_x = el->get_x();
+					tmp_y = el->get_y();
+					int shape;
+					shape = el->get_shape_();
+					std::vector<int> pasa¿erowie = el->get_passengers_();
+					if (tmp_x == tmp_x_p && tmp_y == tmp_y_p)
+					{
+						cStation* tmp_station = new cStation;
+						tmp_station->set_x(tmp_x_p);
+						tmp_station->set_y(tmp_y_p);
+						tmp_station->set_shape_(shape);
+						tmp_station->set_passengers(pasa¿erowie);
+						// w razie potrzeby, mo¿na dodaæ tutaj inne settery je¿eli bêd¹ niezbêdne do funkcjonowania
+						el1->set_beginning(tmp_station, used_color_);
+					}
+					else if (tmp_x == tmp_x_k && tmp_y == tmp_y_k)
+					{
+						cStation* tmp_station = new cStation;
+						tmp_station->set_x(tmp_x_k);
+						tmp_station->set_y(tmp_y_k);
+						tmp_station->set_shape_(shape);
+						tmp_station->set_passengers(pasa¿erowie);
+						el1->set_destination(tmp_station, used_color_);
+					}
+				}
+			}
+
+			cStation* tmp;
+			for (auto&ele : lines_d[i])
+			{
+				tmp = ele->get_destination_(i);
+				line_stations_[i].push_back(tmp);		//zmienic w pewnych przypadkach na push_front lub insert aby nie bylo bugow
+				std::cout << tmp->x() << "    " << tmp->y() << std::endl;
+				//if (ele == lines_d[i].back())
+				//{
+				//	tmp = ele->get_destination_(i);
+				//	line_stations_[i].push_back(tmp);
+				//	std::cout << tmp->x() << "    " << tmp->y() << std::endl; // Jeœli istnieje pêtla, pierwszy i ostatni adres s¹ takie same
+				//}
+			}
+			std::cout << std::endl;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #include "cDraw_Line.h"
 
-cDraw_Line::cDraw_Line(double xp, double yp, double xk, double yk, double angle) : x_p(xp), y_p(yp), x_k(xk), y_k(yk), angle_(angle)
+cDraw_Line::cDraw_Line(double xp, double yp, double xk, double yk, double angle, int color) : x_p(xp), y_p(yp), x_k(xk), y_k(yk), angle_(angle), color_(color)
 {
 
 }
@@ -11,8 +11,15 @@ void cDraw_Line::draw_line()
 	glRotated(0, 1.0, 0.0, 0.0);
 	glRotated(0, 0.0, 1.0, 0.0);
 	glRotated(angle_, 0.0, 0.0, 1.0);
-
-	glColor3d(1.0, 0.0, 0.0);
+	double colors[3];
+	if (color_ == 0) { colors[0] = 1.0; colors[1] = 0.0; colors[2] = 0.0; }
+	if (color_ == 1) { colors[0] = 0.0; colors[1] = 0.0; colors[2] = 1.0; }
+	if (color_ == 2) { colors[0] = 1.0; colors[1] = 1.0; colors[2] = 0.0; }
+	if (color_ == 3) { colors[0] = 0.0; colors[1] = 1.0; colors[2] = 0.0; }
+	if (color_ == 4) { colors[0] = 1.0; colors[1] = 0.65; colors[2] = 0.0; }
+	if (color_ == 5) { colors[0] = 0.72; colors[1] = 0.0; colors[2] = 1.0; }
+	if (color_ == 6) { colors[0] = 0.0; colors[1] = 1.0; colors[2] = 1.0; }
+	glColor3d(colors[0], colors[1], colors[2]);
 
 	glBegin(GL_POLYGON);
 	{
@@ -80,13 +87,13 @@ bool cDraw_Line::warunek_usuniecia_linii(double glX, double glY)
 	b2 = y2_œrednie - a * x_œrednie;
 	// równania granic to: y = a*x + b1 i y = a*x + b2
 
-	// Sprawdzanie warunku, do wartoœci x_p, x_k dodane/odjete zostanie 0.4 po to, aby warunek usuwania linii nie uruchamia³ siê po klikniêciu na
-	// fragment linii pokrywaj¹cy siê ze stacj¹.
-	if (glX >= x_p - 0.1 && glX <= x_k + 0.1 && glY >= a * glX + b2 -0.1 && glY <= a * glX + b1 + 0.1)
+	// Sprawdzanie warunku, do wartoœci x_p, x_k dodane/odjete zostanie 0.1 po to, aby warunek usuwania linii uruchamia³ siê ³atwiej, tj. nie by³o
+	// problemu z klikniêciem w cienki fragment linii pokrywaj¹cy siê ze stacj¹.
+	if (glX >= x_p && glX <= x_k && glY >= a * glX + b2 && glY <= a * glX + b1)
 	{
 		zmienna = true;
 	}
-	if (glX >= x_k - 0.1 && glX <= x_p + 0.1 && glY <= a * glX + b2 + 0.1 && glY >= a * glX + b1 - 0.1)
+	if (glX >= x_k && glX <= x_p && glY <= a * glX + b2 && glY >= a * glX + b1)
 	{
 		zmienna = true;
 	}
@@ -108,4 +115,29 @@ double cDraw_Line::get_x_sr_()
 double cDraw_Line::get_y_sr_()
 {
 	return y_sr;
+}
+void cDraw_Line::set_beginning_and_destination(cStation* b, cStation* d, int color) 
+{
+	beginning_[0] = b;
+	destination_[0] = d; // W wersji koñcowej zamiast 0 bêdzie wystêpowaæ 'color'
+}
+cStation* cDraw_Line::get_beginning_(int color)
+{
+	return beginning_[0]; // Podobnie jak wy¿ej
+}
+cStation* cDraw_Line::get_destination_(int color)
+{
+	return destination_[0];
+}
+void cDraw_Line::set_beginning(cStation* b, int color)
+{
+	beginning_[0] = b;
+}
+void cDraw_Line::set_destination(cStation* d, int color)
+{
+	destination_[0] = d;
+}
+int cDraw_Line::get_color_()
+{
+	return color_;
 }

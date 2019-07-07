@@ -53,6 +53,9 @@ public:
 
 	//setery
 	void add_passenger(const int& i);
+	void set_shape_(int shape) {
+		shape_ = shape;			//Potrzebne przy przekazywaniu danych
+	}
 
 	void show_passengers() {
 		for (auto el : passengers_){
