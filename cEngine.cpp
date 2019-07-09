@@ -112,6 +112,10 @@ void cEngine::push_back(cLine& l, cStation& s) {
 			l.push_back(s);
 	}
 }
+void cEngine::push_back_line(cLine* line)
+{
+	lines_.push_back(line);
+}
 
 void cEngine::push_front(const int& ktora_l, const int& ktora_s) {
 	for (auto el : stations_) {

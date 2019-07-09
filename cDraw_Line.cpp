@@ -116,27 +116,27 @@ double cDraw_Line::get_y_sr_()
 {
 	return y_sr;
 }
-void cDraw_Line::set_beginning_and_destination(cStation* b, cStation* d, int color) 
-{
-	beginning_[0] = b;
-	destination_[0] = d; // W wersji koñcowej zamiast 0 bêdzie wystêpowaæ 'color'
-}
-cStation* cDraw_Line::get_beginning_(int color)
-{
-	return beginning_[0]; // Podobnie jak wy¿ej
-}
-cStation* cDraw_Line::get_destination_(int color)
-{
-	return destination_[0];
-}
-void cDraw_Line::set_beginning(cStation* b, int color)
-{
-	beginning_[0] = b;
-}
-void cDraw_Line::set_destination(cStation* d, int color)
-{
-	destination_[0] = d;
-}
+//void cDraw_Line::set_beginning_and_destination(cStation* b, cStation* d, int color) 
+//{
+//	beginning_[0] = b;
+//	destination_[0] = d; // W wersji koñcowej zamiast 0 bêdzie wystêpowaæ 'color'
+//}
+//cStation* cDraw_Line::get_beginning_(int color)
+//{
+//	return beginning_[0]; // Podobnie jak wy¿ej
+//}
+//cStation* cDraw_Line::get_destination_(int color)
+//{
+//	return destination_[0];
+//}
+//void cDraw_Line::set_beginning(cStation* b, int color)
+//{
+//	beginning_[0] = b;
+//}
+//void cDraw_Line::set_destination(cStation* d, int color)
+//{
+//	destination_[0] = d;
+//}
 int cDraw_Line::get_color_()
 {
 	return color_;

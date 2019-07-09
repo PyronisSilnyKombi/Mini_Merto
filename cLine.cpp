@@ -1,7 +1,12 @@
 #include "cLine.h"
 
+
 cLine::cLine(cStation &s, int color, bool loop) : color_(color), loop_(loop) {
 	line_stations_.push_back(&s);
+}
+
+cLine::cLine(std::list<cStation*> s, int color, bool loop) : color_(color), loop_(loop), line_stations_(s) {
+
 }
 
 void cLine::push_back(cStation& s) {

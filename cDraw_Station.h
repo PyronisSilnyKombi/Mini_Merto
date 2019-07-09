@@ -18,7 +18,7 @@ public:
 	void draw_station();
 	void draw_passengers();
 	void draw_overcrowd_timer(double angle);
-	void set_color(double r, double g, double b);
+	//void set_color(double r, double g, double b);
 	void set_x_y(double x, double y);
 	double get_x();
 	double get_y();

@@ -39,8 +39,14 @@ protected:
 	double x_p_, y_p_; // Pozycja stacji z której chcemy poprowadziæ liniê. Jest potrzebna do dok³adnego narysowania linii ³¹cz¹cej dwie stacje.
 
 	std::vector<cDraw_Line*> lines_d[7]; 
+	double x_pocz¹tku_linii_, y_pocz¹tku_linii_; // Wspó³rzêdne pierwszej stacji w linii
+	double x_koñca_linii_, y_koñca_linii_;		// Wspó³rzêdne ostatniej stacji w linii
+												// S¹ potrzebne do zachowania porz¹dku adresów, tzn aby dodawane by³y w tych miejscach i w takiej
+	std::vector<cLine*> tmp_vector_;			// Wektor z którego przekazywane s¹ dane do cLine
+												// kolejnoœci jak dodawane s¹ kolejne linie.
 
-	std::list<cStation*> line_stations_[7]; // Lista adresów stacji w linii przekazywana do silnika.
+	std::list<cStation*> line_stations_[7];		// Lista adresów stacji w linii przekazywana do silnika.
+	bool line_loop_[7];
 										
 	bool was_clicked;
 	int used_color_;

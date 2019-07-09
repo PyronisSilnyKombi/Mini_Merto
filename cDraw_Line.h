@@ -15,8 +15,8 @@ class cDraw_Line {
 	double length_;
 
 	// Dane odnoœnie adresów stacji pocz¹tkowej i stacji do której zmierza lokomotywa
-	cStation* beginning_[7];
-	cStation* destination_[7];
+	//cStation* beginning_[7];
+	//cStation* destination_[7];
 public:
 	cDraw_Line(double xp, double yp, double xk, double yk, double angle, int color);
 	void draw_line();

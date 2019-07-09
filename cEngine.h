@@ -42,6 +42,7 @@ public:
 	// funkcje te są przystosowane również dla przekazywania argumentow w postaci obiektów;
 	void push_back(const int& ktora_l, const int& ktora_s);
 	void push_back(cLine& l, cStation& s);
+	void push_back_line(cLine* line);
 	void push_front(const int& ktora_l, const int& ktora_s);
 	void push_front(cLine& l, cStation& s);
 	void pop_back(const int& ktora_l);

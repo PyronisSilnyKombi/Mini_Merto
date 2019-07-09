@@ -260,7 +260,7 @@ void cDraw_Station::draw_station()
 		glRotated(0, 0.0, 1.0, 0.0);
 		glRotated(0, 0.0, 0.0, 1.0);
 
-		glColor3d(1.0, 1.0, 1.0);
+		glColor3d(0.0, 0.0, 0.0);
 
 		glBegin(GL_POLYGON);
 		{
@@ -280,7 +280,7 @@ void cDraw_Station::draw_station()
 			glRotated(0, 0.0, 1.0, 0.0);
 			glRotated(0, 0.0, 0.0, 1.0);
 
-			glColor3d(0.0, 0.0, 0.0);
+			glColor3d(1.0, 1.0, 1.0);
 
 			glBegin(GL_POLYGON);
 			{
@@ -312,7 +312,7 @@ void cDraw_Station::draw_station()
 		glRotated(0, 0.0, 1.0, 0.0);
 		glRotated(0, 0.0, 0.0, 1.0);
 
-		glColor3d(1.0, 1.0, 1.0);
+		glColor3d(0.0, 0.0, 0.0);
 
 		glBegin(GL_POLYGON);
 		{
@@ -338,7 +338,7 @@ void cDraw_Station::draw_station()
 			glRotated(0, 0.0, 1.0, 0.0);
 			glRotated(0, 0.0, 0.0, 1.0);
 
-			glColor3d(0.0, 0.0, 0.0);
+			glColor3d(1.0, 1.0, 1.0);
 
 			glBegin(GL_POLYGON);
 			{
@@ -375,7 +375,7 @@ void cDraw_Station::draw_station()
 		glRotated(0, 0.0, 1.0, 0.0);
 		glRotated(0, 0.0, 0.0, 1.0);
 
-		glColor3d(1.0, 1.0, 1.0);
+		glColor3d(0.0, 0.0, 0.0);
 
 		glBegin(GL_POLYGON);
 		{
@@ -404,7 +404,7 @@ void cDraw_Station::draw_station()
 			glRotated(0, 0.0, 1.0, 0.0);
 			glRotated(0, 0.0, 0.0, 1.0);
 
-			glColor3d(0.0, 0.0, 0.0);
+			glColor3d(1.0, 1.0, 1.0);
 
 			glBegin(GL_POLYGON);
 			{
