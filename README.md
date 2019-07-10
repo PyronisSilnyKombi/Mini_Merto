@@ -20,4 +20,5 @@ Klasy:
 - cKolejka - jeżdżąca po liniach charakterystycznego dla siebie koloru i zabierająca oraz wysadzająca pasażerów na odpowiednich stacjach,
 - cStacja - odpowiada za pojawianie się na niej pasażerów, przechowuje swój kształt i sprawdza warunek zakończenia gry (10ciu pasażerów na 1 stacji - przeludnienie),
 - cLinia - przechowuje wszystkie stacje przez jakie przechodzi, kolor oraz czy jest linią czy pętlą i kolejka może jeździć do okoła,
+- cDraw_Line, cDraw_Station, cDraw_Locomotive - odpowiadają za graficzną reprezentację oraz przetwarzają dane do formy w której mogą zostać przekazane do wyżej wymienionych klas.
 
