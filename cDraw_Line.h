@@ -39,4 +39,5 @@ public:
 	void set_beginning(cStation* b, int color);
 	void set_destination(cStation* d, int color);
 	bool warunek_usuniecia_linii(double glX, double glY);
+	bool warunek_dodania_kolejki(double glX, double glY);
 };

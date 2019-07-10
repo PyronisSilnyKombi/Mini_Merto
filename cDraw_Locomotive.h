@@ -1,6 +1,9 @@
 #pragma once
-#include "cScene.h"
 #include <GL/freeglut.h>
+#include <vector>
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 class cDraw_Locomotive {
 	double x_, y_;
@@ -14,9 +17,12 @@ public:
 	void draw_locomotive();
 	void draw_passengers();
 
-	void change_position();
 	void rotate(float angle);
-	void set_color(double r, double g, double b);
+	void set_color_(int color);
+	void set_x_y_(double x, double y);
+	void set_angle_(double angle);
+	double get_x_();
+	double get_y_();
 	//bool is_clicked(double openglX, double openglY);
 	//bool is_unclicked(double openglX, double openglY);
 };

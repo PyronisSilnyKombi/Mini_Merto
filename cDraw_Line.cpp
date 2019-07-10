@@ -141,3 +141,35 @@ int cDraw_Line::get_color_()
 {
 	return color_;
 }
+bool cDraw_Line::warunek_dodania_kolejki(double glX, double glY)
+{
+	bool zmienna = false;
+	// Wyznaczanie równañ liniowych bêd¹cych wartoœciami granicznymi dla wspó³rzêdnej y
+	double a, k¹t, b1, b2, x_œrednie, y_œrednie; // x i y œrednie pos³u¿¹ do wyznaczenia b. b jest jedynym elementem który ró¿ni siê w obu równaniach,
+												 // dlatego oddzielnie wyznaczane s¹ tylko b1 i b2.
+	k¹t = this->get_angle_();
+	a = tan((k¹t*M_PI) / 180);
+	x_œrednie = this->get_x_sr_();
+	y_œrednie = this->get_y_sr_();
+	double y1_œrednie, y2_œrednie, d; // d to odleglosc miedzy wartosciami y1 i y2. Aby otrzymac wartosci y1 i y2 które s¹ potrzebne do wyliczenia b,
+									  // do y_œredniego trzeba kolejno dla y1 dodaæ d/2 i dla y2 odj¹æ d/2.
+	d = 0.2 / (sin(M_PI / 2 - k¹t * (M_PI / 180)));
+	y1_œrednie = y_œrednie + d / 2;
+	y2_œrednie = y_œrednie - d / 2;
+
+	b1 = y1_œrednie - a * x_œrednie;
+	b2 = y2_œrednie - a * x_œrednie;
+	// równania granic to: y = a*x + b1 i y = a*x + b2
+
+	// Sprawdzanie warunku, do wartoœci x_p, x_k dodane/odjete zostanie 0.1 po to, aby warunek usuwania linii uruchamia³ siê ³atwiej, tj. nie by³o
+	// problemu z klikniêciem w cienki fragment linii pokrywaj¹cy siê ze stacj¹.
+	if (glX >= x_p && glX <= x_k && glY >= a * glX + b2 && glY <= a * glX + b1)
+	{
+		zmienna = true;
+	}
+	if (glX >= x_k && glX <= x_p && glY <= a * glX + b2 && glY >= a * glX + b1)
+	{
+		zmienna = true;
+	}
+	return zmienna;
+}

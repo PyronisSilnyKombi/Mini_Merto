@@ -6,17 +6,18 @@ cDraw_Locomotive::cDraw_Locomotive(double x, double y, double angle) : x_(x), y_
 }
 void cDraw_Locomotive::draw_locomotive()
 {
-	glTranslated(x_, y_, 0.0);
+	glTranslated(x_/2, y_/2, 0.0);
 
 	this->draw_passengers();
 	{
 		glPushMatrix();
-		glTranslated(x_, y_, 0.0);
+		glTranslated(x_/2, y_/2, 0.0);
 		glRotated(0, 1.0, 0.0, 0.0);
 		glRotated(0, 0.0, 1.0, 0.0);
 		glRotated(angle_, 0.0, 0.0, 1.0);
 
 		double colors[3];
+		if (color_ == -1) { colors[0] = 0.5; colors[1] = 0.5; colors[2] = 0.5; } // Kolor dla kolejki która jeszcze nie zosta³a przypisana do linii.
 		if (color_ == 0) { colors[0] = 1.0; colors[1] = 0.0; colors[2] = 0.0; }
 		if (color_ == 1) { colors[0] = 0.0; colors[1] = 0.0; colors[2] = 1.0; }
 		if (color_ == 2) { colors[0] = 1.0; colors[1] = 1.0; colors[2] = 0.0; }
@@ -287,4 +288,25 @@ void cDraw_Locomotive::draw_passengers()
 		}
 		glPopMatrix();
 	}
+}
+void cDraw_Locomotive::set_color_(int color)
+{
+	color_ = color;
+}
+void cDraw_Locomotive::set_x_y_(double x, double y)
+{
+	x_ = x;
+	y_ = y;
+}
+double cDraw_Locomotive::get_x_()
+{
+	return x_;
+}
+double cDraw_Locomotive::get_y_()
+{
+	return y_;
+}
+void cDraw_Locomotive::set_angle_(double angle)
+{
+	angle_ = angle;
 }

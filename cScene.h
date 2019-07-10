@@ -24,6 +24,7 @@ void key_binding(unsigned char key, int x, int y);
 void onMouseButton_binding(int button, int state, int x, int y);
 //void mouse_binding(int button, int state, int x, int y);
 void mouse_move_binding(int x, int y);
+void Passive_Mouse_Func_binding(int x, int y);
 void timer_binding(int i);
 
 
@@ -51,7 +52,8 @@ protected:
 	bool was_clicked;
 	int used_color_;
 	cDraw_Line* adres_linii;
-	//std::vector<cDraw_Locomotive*> locomotives_d;
+	std::vector<cDraw_Locomotive*> locomotives_d;
+	bool locomotive_active_; // Jesli true, w miejscu kursora jest lokomotywa któr¹ mo¿na po³o¿yæ na jednej z linii aby mog³a zacz¹æ siê poruszaæ.
 
 public:
 	cMap();
@@ -67,6 +69,7 @@ public:
 	void key(unsigned char key, int x, int y);
 	//void mouse(int button, int state, int x, int y);
 	void mouse_move(int x, int y);
+	void Passive_Mouse_Func(int x, int y);
 	void onMouseButton(int button, int state, int x, int y);
 	void set_used_color_(int c);
 };

@@ -38,6 +38,10 @@ void display_binding() {
 void mouse_move_binding(int x, int y) {
 	scene.mouse_move(x, y);
 }
+void Passive_Mouse_Func_binding(int x, int y)
+{
+	scene.Passive_Mouse_Func(x, y);
+}
 
 int main(int argc, char *argv[])
 {
