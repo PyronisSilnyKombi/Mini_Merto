@@ -41,6 +41,7 @@ public:
 	// linie numerujemy od 0 (nr lini inaczej kolor), a stacje od 1;
 	// funkcje te są przystosowane również dla przekazywania argumentow w postaci obiektów;
 	void push_back(const int& ktora_l, const int& ktora_s);
+	void push_back(cLocomotive* loco);
 	void push_back(cLine& l, cStation& s);
 	void push_back_line(cLine* line);
 	void push_front(const int& ktora_l, const int& ktora_s);

@@ -79,29 +79,29 @@ int main(int argc, char *argv[])
 	std::cout << std::endl;
 
 	// ustawienie koleji
-	scene.silnik_.add_loco(0, 0);
-	scene.silnik_.locomotives().front()->drop(*scene.silnik_.lines().front(), *scene.silnik_.stations().front(), *scene.silnik_.stations().back());
+	//scene.silnik_.add_loco(0, 0);
+	//scene.silnik_.locomotives().front()->drop(*scene.silnik_.lines().front(), *scene.silnik_.stations().front(), *scene.silnik_.stations().back());
 
-	std::cout << "KOLEJKA" << std::endl;
-	std::cout << "Kolor lini kolejki: " << scene.silnik_.locomotives().front()->line_color() << std::endl;
-	std::cout << "x nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->x() << std::endl;
-	std::cout << "y nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->y() << std::endl;
-	std::cout << "x poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->x() << std::endl;
-	std::cout << "y poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->y() << std::endl;
-	std::cout << "alpha_v: " << scene.silnik_.locomotives().front()->alpha_v() << std::endl;
-	std::cout << "v: " << scene.silnik_.locomotives().front()->v() << std::endl;
-	std::cout << std::endl;
+	//std::cout << "KOLEJKA" << std::endl;
+	//std::cout << "Kolor lini kolejki: " << scene.silnik_.locomotives().front()->line_color() << std::endl;
+	//std::cout << "x nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->x() << std::endl;
+	//std::cout << "y nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->y() << std::endl;
+	//std::cout << "x poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->x() << std::endl;
+	//std::cout << "y poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->y() << std::endl;
+	//std::cout << "alpha_v: " << scene.silnik_.locomotives().front()->alpha_v() << std::endl;
+	//std::cout << "v: " << scene.silnik_.locomotives().front()->v() << std::endl;
+	//std::cout << std::endl;
 
 
-	std::cout << "Po podniesieniu, przed upuszczeniem" << std::endl;
-	scene.silnik_.locomotives().front()->take(0, 0);
-	std::cout << "Kolor lini kolejki: " << scene.silnik_.locomotives().front()->line_color() << std::endl;
-	std::cout << "x nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->x() << std::endl;
-	std::cout << "y nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->y() << std::endl;
-	std::cout << "x poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->x() << std::endl;
-	std::cout << "y poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->y() << std::endl;
-	std::cout << "alpha_v: " << scene.silnik_.locomotives().front()->alpha_v() << std::endl;
-	std::cout << "v: " << scene.silnik_.locomotives().front()->v() << std::endl;
+	//std::cout << "Po podniesieniu, przed upuszczeniem" << std::endl;
+	//scene.silnik_.locomotives().front()->take(0, 0);
+	//std::cout << "Kolor lini kolejki: " << scene.silnik_.locomotives().front()->line_color() << std::endl;
+	//std::cout << "x nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->x() << std::endl;
+	//std::cout << "y nastepnej stacji: " << scene.silnik_.locomotives().front()->next_station()->y() << std::endl;
+	//std::cout << "x poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->x() << std::endl;
+	//std::cout << "y poprzedniej stacji: " << scene.silnik_.locomotives().front()->previous_station()->y() << std::endl;
+	//std::cout << "alpha_v: " << scene.silnik_.locomotives().front()->alpha_v() << std::endl;
+	//std::cout << "v: " << scene.silnik_.locomotives().front()->v() << std::endl;
 
 
 

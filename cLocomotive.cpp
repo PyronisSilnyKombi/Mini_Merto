@@ -1,7 +1,7 @@
 #include "cLocomotive.h"
 
 cLocomotive::cLocomotive(double x, double y, int capacity) :cPassengerStore(x, y, capacity) {
-	present_station_ = NULL;
+	previous_station_ = NULL;
 	present_station_ = NULL;
 	next_station_ = NULL;
 	line_ = NULL;
@@ -33,6 +33,7 @@ void cLocomotive::set_loco_drop(cStation& s1, cStation& s2) {
 	set_moving_forward();
 	stop_ = false;
 	v_ = 100e-4;
+
 }
 
 void cLocomotive::set_moving_forward() {

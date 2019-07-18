@@ -264,7 +264,7 @@ void cMap::key(unsigned char key, int x, int y) {
 	case 'l':
 	{
 		locomotive_active_ = true;
-		locomotives_d.push_back(new cDraw_Locomotive(0, 0, 0));
+		locomotives_d.push_back(new cDraw_Locomotive(mouse_x, mouse_y, 0));
 		locomotives_d.back()->set_color_(-1);
 
 	}break;
@@ -338,13 +338,14 @@ void cMap::mouse_move(int x, int y)
 }
 void cMap::Passive_Mouse_Func(int x, int y)
 {
+	double openglX = ((double)x - 400) / 800 * 20;
+	double openglY = ((-1)*(double)y + 300) / 600 * 20;
+
+	mouse_x = openglX;
+	mouse_y = openglY;
 	if (locomotive_active_ == true)
 	{
-		double openglX = ((double)x - 400) / 800 * 20;
-		double openglY = ((-1)*(double)y + 300) / 600 * 20;
 		locomotives_d.back()->set_x_y_(openglX, openglY);
-
-		// Wystepuje bug przy dodaniu drugiego elementu
 	}
 }
 void cMap::onMouseButton(int button, int state, int x, int y)
@@ -710,6 +711,34 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 				if (war == true)
 				{
 					int clr = el->get_color_();
+
+
+					//silnik_.push_back(new cLocomotive(openglX, openglY, 6));
+
+					// Dodawanie kolejki do cEngine
+					for (auto& elem : silnik_.lines())
+					{
+						if (clr == elem->color())
+						{
+							cStation *begin, *end;
+							begin = NULL;
+							end = NULL;
+							for (auto& elem2 : elem->line_stations())
+							{
+								if (tmp_x_p == elem2->x() && tmp_y_p == elem2->y())
+								{
+									begin = elem2;
+								}
+								else  if (tmp_x_k == elem2->x() && tmp_y_k == elem2->y())
+								{
+									end = elem2;
+								}
+							}
+							silnik_.drop(*elem, *begin, *end, *new cLocomotive(openglX, openglY, 6));
+						}
+					}
+					// koniec kodu
+
 					locomotives_d.back()->set_color_(clr);
 					double angl = el->get_angle_();
 					locomotives_d.back()->set_angle_(angl);

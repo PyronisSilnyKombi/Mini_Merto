@@ -53,6 +53,7 @@ protected:
 	int used_color_;
 	cDraw_Line* adres_linii;
 	std::vector<cDraw_Locomotive*> locomotives_d;
+	double mouse_x, mouse_y; // Aktualne polozenie myszki
 	bool locomotive_active_; // Jesli true, w miejscu kursora jest lokomotywa któr¹ mo¿na po³o¿yæ na jednej z linii aby mog³a zacz¹æ siê poruszaæ.
 
 public:

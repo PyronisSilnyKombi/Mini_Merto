@@ -112,6 +112,10 @@ void cEngine::push_back(cLine& l, cStation& s) {
 			l.push_back(s);
 	}
 }
+void cEngine::push_back(cLocomotive* loco)
+{
+	locomotives_.push_back(loco);
+}
 void cEngine::push_back_line(cLine* line)
 {
 	lines_.push_back(line);
@@ -201,7 +205,8 @@ void cEngine::aktualizuj_lokomotywy(const int& time) {
 
 void cEngine::drop(cLine& l, cStation &s1, cStation &s2, cLocomotive& loco) {
 	if (&s1 == &s2) return;
-	l.loco_push_back(loco);
+	//l.loco_push_back(loco);  Wykomentowalem ten fragment bo w loco.drop kolejka jest push backowana ponownie, przez co przy dodaniu jednej
+	//						   kolejki, w wektorze znajduja sie dwie.
 	loco.drop(l, s1, s2);
 }
 
