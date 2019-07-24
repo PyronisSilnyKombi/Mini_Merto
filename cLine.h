@@ -26,6 +26,7 @@ public:
 	bool loop() { Loop(); return loop_; }
 	int color() { return color_; }
 	std::list<cStation*> line_stations() { return line_stations_; }
+	std::vector<cLocomotive*> line_loco() { return line_loco_; }
 
 	//setery
 	void set_color(const int& color) { color_ = color; }

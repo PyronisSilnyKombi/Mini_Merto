@@ -13,16 +13,15 @@
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <chrono>
 
 
 
 
 void resize_binding(int width, int height);
-//void idle_binding();
 void display_binding();
 void key_binding(unsigned char key, int x, int y);
 void onMouseButton_binding(int button, int state, int x, int y);
-//void mouse_binding(int button, int state, int x, int y);
 void mouse_move_binding(int x, int y);
 void Passive_Mouse_Func_binding(int x, int y);
 void timer_binding(int i);
@@ -32,6 +31,9 @@ class cMap {
 public:
 	cEngine silnik_;
 protected:
+	int time_;
+	int licznik_;
+
 	std::list<cDraw_Station*> stations_d;
 
 	bool warunek_klikniecia_;

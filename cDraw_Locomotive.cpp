@@ -603,3 +603,7 @@ void cDraw_Locomotive::set_angle_(double angle)
 {
 	angle_ = angle;
 }
+void cDraw_Locomotive::set_passengers_(std::vector <int> passengers)
+{
+	passengers_ = passengers;
+}

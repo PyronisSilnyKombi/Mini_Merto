@@ -8,26 +8,28 @@ cEngine::cEngine(int ilosc_wolnych_lokomotyw, int ilosc_wolnych_linii) : ilosc_w
 	int tmp_lvl;
 	ilosc_stacji_ = 0;
 	srand(time(NULL));
+	ilosc_wolnych_lokomotyw_ = 2;
+	ilosc_kolorow_ = 2;
 
 	//dodanie stacji
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 3; i++) {
 		cStation *s = new cStation(stations_, 2, 18, 18, poziom_mapy_, tmp_lvl, ilosc_stacji_);
 		stations_.push_back(s);
 		poziom_mapy_ = tmp_lvl;
 	}
 
 	//dodanie pasa¿erów
-	for (auto el : stations_) {
-		for (int i = 0; i < 10; i++)
-		el->spawn_passenger(poziom_mapy_);
-	}
+	//for (auto el : stations_) {
+	//	for (int i = 0; i < 10; i++)
+	//	el->spawn_passenger(poziom_mapy_);
+	//}
 
 	//dodanie lini
-	this->add_line(*stations_.front());
-	for (auto el : stations_) {
-		if( el->number() != 1)
-		lines_.front()->push_back(*el);
-	}
+	//this->add_line(*stations_.front());
+	//for (auto el : stations_) {
+	//	if( el->number() != 1)
+	//	lines_.front()->push_back(*el);
+	//}
 
 }
 
@@ -220,4 +222,28 @@ void cEngine::take(const int& x, const int& y, cLocomotive& loco) {
 
 cEngine::~cEngine() {
 
+}
+void cEngine::erase_all_locomotives()
+{
+	locomotives_.erase(locomotives_.begin(), locomotives_.end());
+}
+void cEngine::push_back_passenger(int p, int licznik)
+{
+	int licz = 0;
+	for (auto &el : stations_)
+	{
+		if (licznik == licz)
+		{
+			el->add_passenger(p);
+		}
+		licz++;
+	}
+}
+void cEngine::set_ilosc_wolnych_lokomotyw_(int k)
+{
+	ilosc_wolnych_lokomotyw_ = k;
+}
+void cEngine::set_ilosc_kolorow(int kolory)
+{
+	ilosc_kolorow_ = kolory;
 }

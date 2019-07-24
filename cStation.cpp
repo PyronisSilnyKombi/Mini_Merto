@@ -59,7 +59,7 @@ void cStation::spawn(std::list<cStation*> &stations, const float &r, const float
 	}
 }
 
-void cStation::spawn_passenger(const int& poziom) {
+void cStation::spawn_passenger(const int& poziom, int& fig) {
 	int figure; // 1 - circle, 2 - triangle, 3 - square, 4 - rhombus, 5 - pentagon, 6 - star, 7 - cross;
 	int acc = 0;
 	do {
@@ -77,6 +77,7 @@ void cStation::spawn_passenger(const int& poziom) {
 	} while (figure > poziom);
 	if (figure != shape_) {
 		passengers_.push_back(figure);
+		fig = figure;
 		this->overcrowd();
 	}
 }

@@ -21,8 +21,8 @@ public:
 	void set_color_(int color);
 	void set_x_y_(double x, double y);
 	void set_angle_(double angle);
+	void set_passengers_(std::vector <int> passengers);
 	double get_x_();
 	double get_y_();
-	//bool is_clicked(double openglX, double openglY);
-	//bool is_unclicked(double openglX, double openglY);
+
 };

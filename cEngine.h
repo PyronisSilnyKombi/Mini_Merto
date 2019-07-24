@@ -16,6 +16,7 @@ class cEngine {
 	int ilosc_przewiezionych_pasazerow_;
 	int ilosc_wolnych_lokomotyw_;
 	int ilosc_wolnych_linii_;
+	int ilosc_kolorow_;
 
 	int points_;
 	int poziom_mapy_; // poziom mapy okresla na jakie figury moze pojawic sie szansa wylosowania, jezeli poziom mapy to 0 - na mapie aktualnie sa tylko koła, to może wylosować koło albo trójkąt,
@@ -36,6 +37,8 @@ public:
 	void add_line(cStation &s); // dodaje linie zaczynajaca się w podanej stacji
 	void erase_line(const int& ktora); // ktora z kolei 0,1,2,3 odpowiada kolorom 0 - red, 1 - blue, 2 - yellow, 3 - green, 4 - orange, 5 - purple, 6 - light blue;
 	void erase_line(cLine& l); // usuwa linię i ustala prawidlowe kolory pozostałych
+	void erase_all_locomotives();
+	void set_ilosc_wolnych_lokomotyw_(int k);
 
 	// zaspół funkcji odpowiedzialnych za utawienie listy przystanków w poszczególnych liniach
 	// linie numerujemy od 0 (nr lini inaczej kolor), a stacje od 1;
@@ -43,6 +46,7 @@ public:
 	void push_back(const int& ktora_l, const int& ktora_s);
 	void push_back(cLocomotive* loco);
 	void push_back(cLine& l, cStation& s);
+	void push_back_passenger(int p, int licznik);
 	void push_back_line(cLine* line);
 	void push_front(const int& ktora_l, const int& ktora_s);
 	void push_front(cLine& l, cStation& s);
@@ -74,6 +78,9 @@ public:
 	std::list<cStation*> stations() { return stations_; }
 	std::vector<cLine*> lines() { return lines_; }
 	std::vector<cLocomotive*> locomotives() { return locomotives_; }
+	int get_ilosc_kolorow() { return ilosc_kolorow_; }
+	
+	void set_ilosc_kolorow(int kolory);
 
 
 	//przyjaciele

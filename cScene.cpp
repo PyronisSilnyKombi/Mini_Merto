@@ -9,18 +9,10 @@ cMap::cMap()
 	was_clicked = false;
 	used_color_ = 0;
 	locomotive_active_ = false;
+	time_ = 0;
+	licznik_ = 0;
 
-	//cEngine silnik;
-	//silnik_ = silnik;
-
-	//std::list<cStation*> stacje_tmp = silnik_.stations();
-	//for (auto&el : stacje_tmp)
-	//{
-	//	double x = el->x();
-	//	double y = el->y();
-	//	std::vector <int> p = el->passengers();
-	//	stations_d.push_back(new cDraw_Station(x, y, p));
-	//}
+	srand(time(NULL));
 }
 
 void cMap::resize(int width, int height) {
@@ -30,8 +22,6 @@ void cMap::resize(int width, int height) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glFrustum(-ar, ar, -1.0, 1.0, 2.0, 100.0);
-	//gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 	glOrtho(-10, 10, -10, 10, -1, 1);
 
 
@@ -54,6 +44,26 @@ void cMap::timer() {
 			stations_d.push_back(new cDraw_Station(x, y, p, shape));
 		}
 	}
+	else
+	{
+		int iter = 0;
+		for (auto&el : stacje_tmp)
+		{
+			std::vector <int> p = el->passengers();
+			int iter2 = 0;
+			for (auto &el2 : stations_d)
+			{
+				if (iter2 == iter)
+				{
+					el2->erase_passengers_();
+					el2->set_passengers_(p);
+				}
+
+				iter2++;
+			}
+			iter++;
+		}
+	}
 
 
 	int iloœæ_linii = 0;
@@ -74,39 +84,113 @@ void cMap::timer() {
 	{
 		silnik_.push_back_line(new cLine(line_stations_[i], i, line_loop_[i]));
 
-		// Wykomentowany kod jest do sprawdzenia czy dane s¹ poprawnie przekazane, ale trzeba wtedy upubliczniæ dane z poszczególnych klas.
-
-		//for (auto & el : silnik_.lines_[i]->line_stations_)
-		//{
-		//	double x = el->x();
-		//	double y = el->y();
-		//	std::cout << x << "    " << y << std::endl;
-		//}
-
+	}
+	int ilosc_loco = 0;
+	for (auto &el : silnik_.lines())
+	{
+		int tmp = el->line_loco().size();
+		ilosc_loco = ilosc_loco + tmp;
+	}
+	if (ilosc_loco != silnik_.locomotives().size())
+	{
+		silnik_.erase_all_locomotives();
+		for (auto &el : silnik_.lines())
+		{
+			for (auto &elem : el->line_loco())
+			{
+				silnik_.push_back(elem);
+			}
+		}
 	}
 
+	silnik_.aktualizuj_lokomotywy(time_);  // Funkcja aktualizacji w silniku nie dzia³a poprawnie.
 
+	if (locomotives_d.size() == silnik_.locomotives().size())
+	{
+		std::vector <cLocomotive*> temp = silnik_.locomotives();
+		for (int i = 0; i < locomotives_d.size(); i++)
+		{
+			double x_tmp = temp[i]->x();
+			double y_tmp = temp[i]->y();
+			std::vector <int> passengers_tmp = temp[i]->passengers();
+
+			locomotives_d[i]->set_x_y_(x_tmp, y_tmp);
+			locomotives_d[i]->set_passengers_(passengers_tmp);
+		}
+	}
+
+	// Losowanie nowych elementów na mapie
+
+	int val = std::rand() % 50;
+	if (val == 1)
+	{
+		int ktora_stacja = std::rand() % silnik_.stations().size();
+		int licznik = 0;
+		int p = -1;
+		for (auto el : silnik_.stations()) {
+			if (licznik == ktora_stacja)
+			{
+				el->spawn_passenger(silnik_.poziom_mapy(), p);
+			}
+			licznik++;
+			
+		}	
+	}
+	
+	//Czasowe udostepnianie nowych kolorow i lokomotyw
+	if (time_ > 10000 && time_ < 30000)
+	{
+		silnik_.set_ilosc_kolorow(3);
+	}
+	else if (time_ > 30000 && time_ < 60000)
+	{
+		silnik_.set_ilosc_kolorow(4);
+	}
+	else if (time_ > 60000 && time_ < 100000)
+	{
+		silnik_.set_ilosc_kolorow(5);
+	}
+	else if (time_ > 100000 && time_ < 150000)
+	{
+		silnik_.set_ilosc_kolorow(6);
+	}
+	else if (time_ > 150000)
+	{
+		silnik_.set_ilosc_kolorow(7);
+	}
+	
+	if (licznik_ >= 50000)
+	{
+		int tmp = silnik_.ilosc_wolnych_lokomotyw();
+		silnik_.set_ilosc_wolnych_lokomotyw_(tmp + 1);
+		licznik_ = 0;
+	}
+	licznik_ = licznik_ + 40;
+
+	if (silnik_.stations().size() < 25) // Liczba stacji jest ograniczona do 25 ze wzgledu na wielkosc mapy
+	{
+		int val_s = std::rand() % 900;
+		if (val_s == 1)
+		{
+			silnik_.add_station(2, 18, 18);
+		}
+	}
+
+	for (auto & el : silnik_.stations())
+	{
+		if (el->state() == 2)
+		{
+			std::cout << "Koniec gry, jedna ze stacji jest przepelniona." << std::endl;
+			system("pause");
+			system("exit");
+		}
+	}
+	
+
+	time_ = time_ + 40; // Timer jest aktywowany co 0.04 sekundy
 	glutPostRedisplay();
 	glutTimerFunc(40, timer_binding, 0);
 }
-
-//void cMap::idle() {
-//
-//	std::list<cStation*> stacje_tmp = silnik_.stations();
-//	if (stacje_tmp.size() != stations_d.size())
-//	{
-//		stations_d.erase(stations_d.begin(), stations_d.end());
-//		for (auto&el : stacje_tmp)
-//		{
-//			double x = el->x();
-//			double y = el->y();
-//			std::vector <int> p = el->passengers();
-//			stations_d.push_back(new cDraw_Station(x, y, p));
-//		}
-//	}
-//
-//	glutPostRedisplay();
-//}
 
 void cMap::display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -233,39 +317,64 @@ void cMap::key(unsigned char key, int x, int y) {
 		if (p2) p2->reduce(1);
 		break;
 	}*/
+
+
 	case '1':
 	{
-		this->set_used_color_(0);
+			this->set_used_color_(0);
 	}break;
 	case '2':
 	{
-		this->set_used_color_(1);
+		if (silnik_.get_ilosc_kolorow() >= 2)
+		{
+			this->set_used_color_(1);
+		}
 	}break;
 	case '3':
 	{
-		this->set_used_color_(2);
+		if (silnik_.get_ilosc_kolorow() >= 3)
+		{
+			this->set_used_color_(2);
+		}
 	}break;
 	case '4':
 	{
-		this->set_used_color_(3);
+		if (silnik_.get_ilosc_kolorow() >= 4)
+		{
+			this->set_used_color_(3);
+		}
 	}break;
 	case '5':
 	{
-		this->set_used_color_(4);
+		if (silnik_.get_ilosc_kolorow() >= 5)
+		{
+			this->set_used_color_(4);
+		}
 	}break;
 	case '6':
 	{
-		this->set_used_color_(5);
+		if (silnik_.get_ilosc_kolorow() >= 6)
+		{
+			this->set_used_color_(5);
+		}
 	}break;
 	case '7':
 	{
-		this->set_used_color_(6);
+		if (silnik_.get_ilosc_kolorow() >= 7)
+		{
+			this->set_used_color_(6);
+		}
 	}break;
 	case 'l':
 	{
-		locomotive_active_ = true;
-		locomotives_d.push_back(new cDraw_Locomotive(mouse_x, mouse_y, 0));
-		locomotives_d.back()->set_color_(-1);
+		int ilosc_kolejek = silnik_.ilosc_wolnych_lokomotyw();
+		if (ilosc_kolejek > 0)
+		{
+			locomotive_active_ = true;
+			locomotives_d.push_back(new cDraw_Locomotive(mouse_x, mouse_y, 0));
+			locomotives_d.back()->set_color_(-1);
+			silnik_.set_ilosc_wolnych_lokomotyw_(ilosc_kolejek - 1);
+		}
 
 	}break;
 	}
@@ -276,8 +385,7 @@ void cMap::set_used_color_(int c)
 }
 
 cMap::~cMap() {
-	/*for (auto &el : figures)
-		delete el;*/
+
 }
 
 void cMap::mouse_move(int x, int y) 
@@ -642,28 +750,6 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 						}
 					}
 				}
-
-				//	cStation* tmp;
-				//	for (auto&ele : line_stations_[i])
-				//	{
-				//		//tmp = ele->get_destination_(i);
-				//	//	line_stations_[i].push_back(tmp);		//zmienic w pewnych przypadkach na push_front lub insert aby nie bylo bugow
-				//		std::cout << ele->x() << " " << ele->y() << std::endl;
-
-
-				//	//	std::cout << tmp->x() << "    " << tmp->y() << std::endl;
-				//		//if (ele == lines_d[i].back())
-				//		//{
-				//		//	tmp = ele->get_destination_(i);
-				//		//	line_stations_[i].push_back(tmp);
-				//		//	std::cout << tmp->x() << "    " << tmp->y() << std::endl; // Jeœli istnieje pêtla, pierwszy i ostatni adres s¹ takie same
-				//		//}
-				//	}
-				//	//std::cout << std::endl;
-				//}
-				//std::cout << std::endl << x_pocz¹tku_linii_ << "   " << y_pocz¹tku_linii_ << std::endl;
-				//std::cout << x_koñca_linii_ << "   " << y_koñca_linii_ << std::endl<<std::endl;
-
 			}
 
 			// Wyznaczenie czy linia jest zapêtlona
@@ -712,9 +798,6 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 				{
 					int clr = el->get_color_();
 
-
-					//silnik_.push_back(new cLocomotive(openglX, openglY, 6));
-
 					// Dodawanie kolejki do cEngine
 					for (auto& elem : silnik_.lines())
 					{
@@ -737,7 +820,6 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 							silnik_.drop(*elem, *begin, *end, *new cLocomotive(openglX, openglY, 6));
 						}
 					}
-					// koniec kodu
 
 					locomotives_d.back()->set_color_(clr);
 					double angl = el->get_angle_();
@@ -750,6 +832,8 @@ void cMap::onMouseButton(int button, int state, int x, int y)
 		{
 			locomotives_d.pop_back();
 			locomotive_active_ = false;
+			int ilosc_kolejek = silnik_.ilosc_wolnych_lokomotyw();
+			silnik_.set_ilosc_wolnych_lokomotyw_(ilosc_kolejek + 1);
 		}
 	}
 	}

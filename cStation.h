@@ -35,7 +35,7 @@ public:
 	cStation(int shape = 1, double x = 0, double y = 0, int capacity = 20, int state = 0);
 	cStation(std::list<cStation*> &stations, float r, float width, float height, int poziom_mapy, int &tmp_lvl, int &ilosc_stacji, int shape = 0, double x = 0, double y = 0, int capacity = 20, int state = 0);
 
-	void spawn_passenger(const int& poziom);
+	void spawn_passenger(const int& poziom, int& fig);
 	// spawns a psssneger, losuje jego kszta³t i dodaje go wektora pasa¿erów stacji, (poziom okreœla jakie figury moga sie pojawic,
 	// 0 - tylko ko³a, 1 - ko³a i trójkaty, 2 - ko³a trójkaty i kwadraty itd)
 	// nie spownujemy pasa¿era ko³o na przystanku ko³o to bez sensu

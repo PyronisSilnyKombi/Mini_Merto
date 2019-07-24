@@ -621,3 +621,14 @@ void cDraw_Station::set_czy_nalezy_do_linii_(bool tmp, int c)
 {
 	czy_nalezy_do_linii_[c] = tmp;
 }
+void cDraw_Station::erase_passengers_()
+{
+	passengers_.erase(passengers_.begin(), passengers_.end());
+}
+void cDraw_Station::set_passengers_(std::vector<int> passengers)
+{
+	for (int i = 0; i < passengers.size(); i++)
+	{
+		passengers_.push_back(passengers[i]);
+	}
+}
