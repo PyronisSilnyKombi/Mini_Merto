@@ -75,4 +75,32 @@ public:
 	void Passive_Mouse_Func(int x, int y);
 	void onMouseButton(int button, int state, int x, int y);
 	void set_used_color_(int c);
+
+	//Refaktoryzacja
+
+	//Timer
+	void aktualizacja_stacji();
+	void aktualizacja_linii();
+	void aktualizacja_kolei();
+	void przekazanie_kolejek_do_cEngine();
+
+	void spawnowanie_pasa¿erów();
+	void spawnowanie_stacji();
+
+	void udostepnianie_kolorow();
+	void udostepnianie_kolejek();
+
+	void warunek_konca_gry();
+
+	//Mouse function
+
+	//void linia_przycisk_aktywny(int button, int state, double openglX, double openglY, bool warunek, int iloœæ_po³¹czeñ, bool czy_nale¿y_do_linii_, cDraw_Station * el);
+	//void linia_przycisk_nieaktywny(int button, int state, double openglX, double openglY, bool & linia_dodana);
+	void tworzenie_nowych_linii(int button, int state, double x, double y, bool & linia_dodana);
+	void usuwanie_linii(bool linia_dodana, int button, int state, int x, int y);
+
+	void wyznaczanie_adresow();
+	void czy_jest_petla();
+	
+	void dodawanie_kolei(int x, int y);
 };
